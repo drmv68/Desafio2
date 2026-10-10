@@ -1,0 +1,166 @@
+Necesito hacer diferentes modulos, hasta ahora lo que he entendido es que deben existir un modulo(una carpeta estatica donde se reciban y se metan fotos desde la ruta directa, no abrá funcion para actualizar o subir desde la consola, entonces directamente desde la carpeta).
+Luego otros modulos para las cosas que son dinamicas y otro para el main que estará limpio, solo llama, sincroniza, atrapa errores, y tal vez el tema de la sobre carga que no entiendo muy bien aun.
+En los modulos dinamicos ahí estarán toda la dinamica, las funciones, clases, no aplicar heredación. Analizando creo que necesito también otro modulo estatico que tenga los 
+statics, diccionarios, structurs, que tendrán que se usarán para la estructura de los perfiles, chats, ahí estarán como los objetos creo, porque no se podrá heredar aún
+entonces como no habrán constructores (creo) es mejor manejar un archivo o una funcion en un modulo especifico para eso, especifico para la reutilización de perfiles, estructuras
+que pueden tener los amigos, el perfil principal del usuario, la interfaz de la consola tambien puede ir aqui, gran parte de las cosas que toque imprimir en pantalla que ocupen muchas lineas de codigo
+así como la interfaz.
+Importante para mi entender mejor el tema de la sobre carga, necesito saber donde es critica o donde es necesaria, para tampoco sobre usarla si no tener eficiencia.
+Para no enredarnos mucho con la memoria dinamica considero que se debe trabajar solo en casos de llamadas de archivos, en lectura y escritura de perfiles, de boleanos, todo 
+lo que altere algo de estructura, cosas estaticas que sean modificadas en el trayecto de la ejecución, pero no sobre usarla, solo en sitios especificos. Me gusta que todo
+quede ordenado en clases, en metodos, cada modulo debe tener una clase principal, donde tenga algo de logica simple, optimizada, eficiente, y logica mas larga no optimizada, simple ne las funciones
+anidadas que use la clase, donde se necesite usar mas logica, usar mucho funciones auxiliares para no reutilizar codigo dentro del modulo, pero nada de usar funciones auxiliares de modulo para otro modulo.
+
+Deben exisitir modulos vitales(posiblemente se usen mas, estamos en analisis inicial): 
+
+Modulos del menú:
+
+0.Main:
+Principal donde habrá try, catch para iterar sobre todo en la lectura y escritura en estatico, y muy necesariamente en otras funciones como el envio de mensajes o algo así. 
+Cuando entienda excelente la sobre carga en este ejercicio también puede ir aquí o en lectura y escritura.
+
+0.1 Statics, estructuras y archivos:
+Tres modulos en una carpeta estatica donde estarán imagenes, loging, estructuras
+esqueletos.
+
+1.Carga y actualizacion de datos:
+Considero que aquí es el unico lugar donde usaremos memoria dinamica, si en otro lado por eficiencia se tiene que usar la usaremos, de momento así. Este modulo
+es el unico que se comunicará con la carpeta estatica, donde estarán los modulos estaticos, fotos, perfiles, estructuras. Lectura, escritura de cosas estaticas.
+
+2.Ingreso a plataforma y visualizacion de mejores amigos:
+Quiero que en el main se llame una funion para arrancar el programa debe haber un modulo
+optimizado donde inicie solicitando datos a usuario, verificando que si esté
+e iniciando, eso debe ser algo facil entonces ya para solo el inicio creo
+que hay que crear dos modulos uno de lectura para que lea un archivo que esté
+en la carpeta estatica, ahí habrá objeto con id y contraseña.
+luego despues de esa verificacion mandar un boleano para que autorice el acceso
+y otro modulo que es el que verifica el booleano de una funcion de una clase
+que sea lecturas o un getter. Luego despues de que tengamos un boleano el main llame
+a inicio de secion que es una funcion, puede estar en una clase, no lo sé, y que la funcion
+llame otras tres (todo esto en un modulo aparte del main, el main solo llama inicio de sesion)
+una de esas tres es el menú principal (el esqueleto del menú se debe guardar en algo estatico, solo las funciones son las que estan por ahí en los modulos principales, creo que es buena idea, se tiene que revisar)
+luego llamar a otra funcion que está en lecutra para revisar que amigo tiene prioridad e imprimir en consola
+pero la verificacion de que amigo tiene mas prioridad creo que debe ser una funcion auxiliar, dentro de una clase o algo así
+debo tener cuidado con el uso de las clases, muy excesivas es malo, deben ser eficiontes, en el punto exacto
+En esa funcion auxiliar que es pesada, larga, nada optimizada, debe estar clara, el funcionamiento si debe ser optimo, eficiente
+pero la escritura y la logica puede ser larga, entendible, simple manimalista (recordar que todo el codigo es vanilla, nada de librerias)
+y esa sería una funcion de verifiacion, para verificar que amigo es mas latente que sea su amigo por los amigos en comun
+
+3. Administrar amistades:
+Esta es otra cosa que se carga al ejecutar menú principal tambien llamar a una clase o funcion
+de otro modulo que se llame algo así como administradorDeAmistadesMenu y esa se encarga de cordinar
+no sé si crearle un modulo propio o que hacer, lo que va hacer eso es llamar unas funciones
+auxiliares o unos metodos o atriburos propiedades. Una será envioDeSolicitud donde
+debe tener una funcion que viva en lectura donde traiga segun prioridad que la validacion de prioridad considero que 
+debe vivir en un modulo especifico para que quede organizado, un modulo para verifiaciones puede ser, toca evaluar esto para
+no crear exceso de modulos, si no es un modulo dejarla como una funcion externa auxiliar por ahí en lectura o en algun lado organizado
+verifique y haga la logica de prioridad segun los amigos en común, debe vivir en lectura en una clase de verificacion o algo así
+luego que retorne esos amigo con mayor prioridad (esto cuando carga el menú), ahora para buscar con nombre
+entonces es una verificacion de busqueda mas simple, en una clase de verifiacion o busqueda, buscar en el archivo de amigos
+buscar ese objeto, mirar si ya se le envió la solicitud o no e imprimir. En caso de no haber enviado solicitud 
+leer el objeto del perfil debe haber un parametro del objeto que sea amistad con un boleano, si está en false es que no se ha enviado
+retorna eso y crea otra funcion que permita la edicion del atributo amistad a true y que le actualice otro metodo al recebidor de la solicitud el id del usuario (id aleatorio que se mete en los archivos estaticos a la fuerza)
+entonces se le agrega ese id de mi usuario (el enviante) en el metodo del recibidor.
+y arroje "solicitud enviada" y con posibilidad de volver.
+Para aceptar amistades recibidas toca entonces crear otro metodo de la clase administradorDeAmistadesMenu
+entonces este metodo es una unica funcion que busque en el objeto de mi perfil
+que están los ids de los usuarios que han enviado solicitud (Que tambien se pasarán a la fuerza en los
+archivos estaticos que le pasé al incio, porque no va a estar interconectado aún)
+Entonces la actualizacion de solicitudes del perfil propio se hacen manual, pero aquí
+lo que vamos a hacer es solo lectura el metodo llama una funcion auxiliar o un metodo del modulo lectura
+para leer que ids tengo en el objeto con un nombre como solicitudDeAmistades, luego con ese id, buscar en la base de datos de perfiles
+que tambien estará en carpeta statics y en un archivo de perfiles, objetos con id, nombre
+todo, entonces que busque solo id y que si coinciden que traiga el nombre. Luego con el nombre que imprima
+el nombre y una funcion que pueda decrilar o aceptar la colicitud, al declinar se borra
+del objeto de mi perfil de solicitudDeAmistades y luego tambien edite el boleano
+de él de algun metodo o dentro del objeto del perfil del enviante donde diga solicitud enviada
+true la pase a false.
+
+4.Visitar peril de un amigo:
+Aquí mas cosas para verificar, leer. Para la parte de los likes a las fotos es el unico sitio donde
+se edita o sobreescribe un objeto que tiene como argumento like.
+
+Una vez se entre aqui a esta clase a esta funcion a esta opcion del menú (creo),
+buscar que id se asocia con el nombre, creo que para efectos de eficiencia de busqueda
+quiero que haya un objeto de base de datos que solo tenga nombre e id, para que si alguna funcion
+requiere busqueda por medio de id o por medio de nombre solo bsuque dos parametros de un obejto
+y que tenga un numero relacionado con el usuario, digamos nombre: daniel mosquera, id:123, usuario: 1, y luego otro archivo
+mas grande donde se busque por usuario, que tenga usuario: 1 y luego si su objeto y sus cosas dentro, para que
+se busque con eficiencia en caso de que hayan demasiados usuarios y toque buscar por nombre o id, que el programa
+no cargue todo el objeto del usuario para buscarlo, que solo busque entre tres cositas,
+busque que numero de usuario es y de ahí si traiga todo el objeto grande del usuario
+para el tema de las imagenes considero que debe haber un atributo que tenga es la ruta de la carpeta de imagenes
+y que cada usuario tenga su id como nombre de carpeta y que se actualice de forma manual las imagenes que tenga cada
+usuario. Debe exitir ruta de imagenes publicas y otra carpeta de imagenes para amigos.
+Aqui es donde debe haber otra validacion y verificacion en los atributos primero para ver si 
+el id de la persona que estamos buscando es amigo si es amigo que permita visualizar las dos carpetas de fotos
+las publicas y las de amigo y si no lo es, que solo permita traer la publica.
+Para la parte de likes otro atributo para perfil y que exita un metodo que 
+edite sobre escriba si la posicion de la foto en que está tiene like o no, las fotos
+para que sea mas organizado tambien tendran un contador que diga like: like o like: sin_like, 
+la funcion sobre escribe esa parte del atributo like en sus respectivos modulos, con sus verificaciones
+para saber si está likeado, y decir que imprimir de primero.
+
+5.Sugerencia de amistad
+Elige cuántos mostrar (K): 6.
+
+Ordena por amigos en común: Busca personas que aún no sean tus amigas, en el modulo o clase verifiacion.
+La verifiacion tiene que ser que compartan la mayor cantidad de amigos contigo.
+Ponlas de primeras en la lista.
+Agrega un botón: Cada sugerencia debe tener la opción de enviarle una solicitud de amistad ahí mismo, reutilizando
+el metodo que creamos de envioDeSolicitud.
+Usa una tabla (matriz): Para calcular esto fácil, guarda las relaciones de amistad en una tabla de doble entrada
+(ceros y unos) donde cruces los nombres de los usuarios para ver quién conoce a quién
+
+6.Administrar mensajes:
+Entonces en menú tambien otro metodo que sea enviar mensajes, en el objeto del perfil crear mensajes
+debe extraer tambien de otro atributo de quienes son amigos para eficiencia, que queden guardados ya ahí
+y que en ese objeto se lea sea el que guarde una direccion en una carpeta que no sea estatica, donde esten mensajes
+esa si se va a editar mucho, entonces quiero que esté aparte porque pueden haber muhcos mensajes
+entonces un archivo donde estén los mensajes, tienen que estar bien catalogados de quien es
+con el numero de usuario correspondiente. Para la parte de leer es la mas extensa, creo que se necesitan funciones auxiliares
+verifiaciones de mensaje, que ordene, que rebice un atriburo de cada objeto y los deje organizados. Debe existir un contador
+propio que cada usuario y tenga asociedo un numero a la llave de de un atriburo
+de una clase o una estrucutura, es decir hay que reescribir perfil, en la parte de mensajes que
+cada mensaje sea guardado con un contador, no sé si sea la forma optima de hacerlo
+o investigar si hay otra forma al llegar a esta parte creo que en el informe
+porque la parte de un contador para cada mensaje que se guarde en el perfil
+y la ruta, sería genial, mirar que se asocie a un id en esa llave de con la fecha
+no sé si sin librerias se pueda lograr esto, es para investigar, de momento estamos analizando.
+
+es correcto, toca usar la fecha para la siguiente parte de busqueda por rango de fecha
+es necesario resolver esto, es decir que se debe crear una funcion, metodo o lo que sea
+para ser llamada y que escriba y guarde fecha de los mensajes y asocie a una ruta
+para buscar arhivo por archivo con una verificacion que no sea mayor de 512 caracteres y guarde archivos constantemente
+por eso considero que no debe ir en la carpeta de "statics", estructuras cosas
+que no se modifican mucho, en este caso aqui habrá una push de archvios constantmenete
+creacion de archivo texto para cada mensaje, es decir debe existir un modulo para lectura
+de archivos, con funcion, clases, metodos, sin herencias, objetos, que optimice la lectura de archivos
+funciones auxiliares en ese modulo, sin exagerar.
+
+En esta versión de la plataforma no se requieren funcionalidades responder
+los mensajes leídos de forma directa.
+
+tengo que tener mucho cuidado con esto, debe estar en el informe como profundicé
+esta parte: "dada una fecha de inicio y una fecha de fin, se deben listar todos
+los mensajes recibidos en ese rango de fechas (ambas inclusive)."
+
+7.Medicion del consumo de recursos:
+Creo que es otra requerimiento del menú, pero yo quiero para que no se vea feo que 
+haya una opcion que llame cuando se solicite otrasFunciones, y que sea creada en otro modulo
+necesito poder tener una forma organizada de la lectura de consumo de recursos, en total, tener un contador vivo en común
+dentro de todo lo principal y que tenga una estructura que se vea como se estructuró
+como se ha modivo en todo momento en las consulta, es un contador que vive en
+muchos lados, silencioso, quiero que sea llamado al final de cada funcion
+que analice lo fisico, movido a rangos rasgos, el peso de las imagenes solicitadas
+y todo eso. y que en ese mismo contador misterioso, se apoye otra clase u otra funcion
+metodo creada para la lectura general macro, y tambien debe exisitr despues de
+que cada funcion, clase, sea requerido, que consume cada cosa, pero eso considero
+que podría ir muy abajo del todo que se tenga que bajar del todo y que cada que se
+entre a una opcion, se ejecute algo, se acualice algo en consola, me gustaría
+que se limpiara, limpieza de consola y luego volver a escribir, buscar si hay una
+opcion para eso, quiero que se vea limpio, como actualizado, como una unica visualizacion
+y que lo del consumo esté bien a lo mas abajo, con mucho entrelineado.
+
+
+presente el criterio de eficiencia, pero seguir mi logica es lo primordial.
