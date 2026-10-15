@@ -22,6 +22,16 @@ add_executable(desafioDOS_UdeABook main.cpp
     modulos_dinamicos/gestor_mensajes.cpp
 )
 
+# La app lee rutas relativas tipo "estaticos_y_db/indice.txt", pero Qt Creator
+# (y CMake en general) corren el .exe desde la carpeta build/, no desde codigo/.
+# Por eso copiamos estaticos_y_db/ junto al ejecutable en cada build, para que
+# esa ruta relativa funcione igual aqui que al abrir el proyecto en Qt Creator.
+add_custom_command(TARGET desafioDOS_UdeABook POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${CMAKE_SOURCE_DIR}/estaticos_y_db
+        $<TARGET_FILE_DIR:desafioDOS_UdeABook>/estaticos_y_db
+)
+
 include(GNUInstallDirs)
 install(TARGETS desafioDOS_UdeABook
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}

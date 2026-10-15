@@ -1,7 +1,9 @@
 #include <iostream>
 
+// Modulos principales (usando comillas dobles, rutas relativas)
 #include "core/monitor_recursos.h"
 #include "core/gestor_archivos.h"
+#include "core/estructuras_base.h"
 #include "modulos_dinamicos/autenticacion.h"
 #include "modulos_dinamicos/admin_amistades.h"
 #include "modulos_dinamicos/visor_perfiles.h"
@@ -9,31 +11,59 @@
 
 using namespace std;
 
-int main() {
+// ============================================================
+// main.cpp
+// Modulo 0 del analisis: limpio, solo llama, sincroniza y
+// atrapa errores. Toda la logica pesada vive en los modulos
+// dinamicos y en core/.
+//
+// FASE MACRO: el flujo esta trazado pero las llamadas reales
+// siguen comentadas hasta que cada modulo tenga su logica.
+// ============================================================
 
+int main() {
+    // Bloque try/catch generalizado para atrapar errores de lectura o ejecucion
     try {
-        // 1. Instanciamos las clases
+        // 1. Instanciamos las clases macro
         GestorArchivos baseDatos;
         Autenticacion moduloAcceso;
         AdminAmistades moduloAmistades;
         VisorPerfiles moduloPerfiles;
         GestorMensajes moduloMensajes;
+
+        // 2. Cargamos el indice ligero de usuarios (Fase 1, ya implementada)
+        bool indiceCargado = baseDatos.cargarIndiceUsuarios("estaticos_y_db/indice.txt");
+
+        // --- Prueba temporal: borra este bloque cuando confirmes que el modulo funciona ---
+        if (indiceCargado) {
+            cout << "--- Verificacion del indice cargado ---" << endl;
+            for (int i = 0; i < baseDatos.getTotalUsuarios(); i++) {
+                const UsuarioLigero& u = baseDatos.getUsuarioLigero(i);
+                cout << "  -> id=" << u.getIdUsuario()
+                     << " | pass=" << u.getContrasena()
+                     << " | nombre=" << u.getNombreUsuario() << endl;
+            }
+        }
+        // --- fin de la prueba temporal ---
+
+        // 3. Llamamos a la validacion de inicio (retorna booleano)
         bool accesoAutorizado = false;
+        // accesoAutorizado = moduloAcceso.iniciarSesion(baseDatos);
 
         if (accesoAutorizado) {
-
+            // 4. Bucle del Menu Principal
             bool ejecutando = true;
             while (ejecutando) {
-                // iran llamadas a los otros modulos dinamicos segun la opcion
+                // Aqui iran las llamadas a los otros modulos dinamicos segun la opcion
                 // Al final de cada opcion: MonitorRecursos::imprimirReporte();
-                ejecutando = false;
+                ejecutando = false; // placeholder para que el bucle no quede infinito
             }
         } else {
             cout << "Acceso no autorizado (logica de autenticacion pendiente)." << endl;
         }
 
     } catch (...) {
-        cout << "Error critico atrapado" << endl;
+        cout << "Error critico atrapado. Sincronizando y cerrando de forma segura." << endl;
     }
 
     return 0;
