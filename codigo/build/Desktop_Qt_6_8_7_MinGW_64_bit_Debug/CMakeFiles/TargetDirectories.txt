@@ -1,0 +1,7 @@
+C:/Users/darim/Documents/UDEA/Info2/desafio2/codigo/build/Desktop_Qt_6_8_7_MinGW_64_bit_Debug/CMakeFiles/desafioDOS_UdeABook.dir
+C:/Users/darim/Documents/UDEA/Info2/desafio2/codigo/build/Desktop_Qt_6_8_7_MinGW_64_bit_Debug/CMakeFiles/edit_cache.dir
+C:/Users/darim/Documents/UDEA/Info2/desafio2/codigo/build/Desktop_Qt_6_8_7_MinGW_64_bit_Debug/CMakeFiles/rebuild_cache.dir
+C:/Users/darim/Documents/UDEA/Info2/desafio2/codigo/build/Desktop_Qt_6_8_7_MinGW_64_bit_Debug/CMakeFiles/list_install_components.dir
+C:/Users/darim/Documents/UDEA/Info2/desafio2/codigo/build/Desktop_Qt_6_8_7_MinGW_64_bit_Debug/CMakeFiles/install.dir
+C:/Users/darim/Documents/UDEA/Info2/desafio2/codigo/build/Desktop_Qt_6_8_7_MinGW_64_bit_Debug/CMakeFiles/install/local.dir
+C:/Users/darim/Documents/UDEA/Info2/desafio2/codigo/build/Desktop_Qt_6_8_7_MinGW_64_bit_Debug/CMakeFiles/install/strip.dir

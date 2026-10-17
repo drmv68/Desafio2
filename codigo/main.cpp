@@ -11,15 +11,7 @@
 
 using namespace std;
 
-// ============================================================
-// main.cpp
-// Modulo 0 del analisis: limpio, solo llama, sincroniza y
-// atrapa errores. Toda la logica pesada vive en los modulos
-// dinamicos y en core/.
-//
-// FASE MACRO: el flujo esta trazado pero las llamadas reales
-// siguen comentadas hasta que cada modulo tenga su logica.
-// ============================================================
+// Main program entry point. Orchestrates modules and handles errors.
 
 int main() {
     // Bloque try/catch generalizado para atrapar errores de lectura o ejecucion

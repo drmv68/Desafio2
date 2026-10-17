@@ -25,9 +25,6 @@ static void copiarTexto(char*& destino, const char* origen) {
     while (origen[longitud] != '\0') {
         longitud++;
     }
-    // [Debugger] Contamos caracteres a mano en vez de usar strlen()
-    // de <cstring>; ambas formas son validas aqui (no es un
-    // contenedor de la STL), pero asi queda explicito el conteo.
 
     destino = new char[longitud + 1];
     for (int i = 0; i < longitud; i++) {
