@@ -89,3 +89,112 @@ const char* UsuarioLigero::getContrasena() const {
 const char* UsuarioLigero::getNombreUsuario() const {
     return nombreUsuario;
 }
+
+// ============================================================
+// FotoConLikes (reutiliza copiarTexto, ya definida arriba, en
+// este mismo archivo: no es "usar una auxiliar de otro modulo",
+// es la misma clase de objeto -texto dinamico- dentro del mismo
+// archivo .cpp).
+// ============================================================
+
+FotoConLikes::FotoConLikes() {
+    nombreDeArchivo = nullptr;
+    cantidadDeLikes = 0;
+    esPublica = false;
+}
+
+FotoConLikes::FotoConLikes(const FotoConLikes& otra) {
+    nombreDeArchivo = nullptr;
+    copiarTexto(nombreDeArchivo, otra.nombreDeArchivo);
+    cantidadDeLikes = otra.cantidadDeLikes;
+    esPublica = otra.esPublica;
+}
+
+FotoConLikes::~FotoConLikes() {
+    delete[] nombreDeArchivo;
+}
+
+void FotoConLikes::setNombreDeArchivo(const char* valor) {
+    copiarTexto(nombreDeArchivo, valor);
+}
+
+void FotoConLikes::setCantidadDeLikes(int valor) {
+    cantidadDeLikes = valor;
+}
+
+void FotoConLikes::setEsPublica(bool valor) {
+    esPublica = valor;
+}
+
+const char* FotoConLikes::getNombreDeArchivo() const {
+    return nombreDeArchivo;
+}
+
+int FotoConLikes::getCantidadDeLikes() const {
+    return cantidadDeLikes;
+}
+
+bool FotoConLikes::getEsPublica() const {
+    return esPublica;
+}
+
+// ============================================================
+// PerfilCompleto
+// ============================================================
+
+PerfilCompleto::PerfilCompleto() {
+    rutaCarpetaDeFotos = nullptr;
+    fotos = nullptr;
+    cantidadDeFotos = 0;
+}
+
+PerfilCompleto::PerfilCompleto(const PerfilCompleto& otro) {
+    rutaCarpetaDeFotos = nullptr;
+    fotos = nullptr;
+    cantidadDeFotos = 0;
+
+    copiarTexto(rutaCarpetaDeFotos, otro.rutaCarpetaDeFotos);
+
+    inicializarFotos(otro.cantidadDeFotos);
+    int posicionActual = 0;
+    while (posicionActual < cantidadDeFotos) {
+        fotos[posicionActual].setNombreDeArchivo(otro.fotos[posicionActual].getNombreDeArchivo());
+        fotos[posicionActual].setCantidadDeLikes(otro.fotos[posicionActual].getCantidadDeLikes());
+        fotos[posicionActual].setEsPublica(otro.fotos[posicionActual].getEsPublica());
+        // [Debugger] Copiamos foto por foto usando los setters de FotoConLikes
+        // (no "fotos[i] = otro.fotos[i];", porque FotoConLikes no tiene
+        // operator= propio todavia; copiar campo a campo es seguro igual).
+        posicionActual = posicionActual + 1;
+    }
+}
+
+PerfilCompleto::~PerfilCompleto() {
+    delete[] rutaCarpetaDeFotos;
+    delete[] fotos;
+}
+
+void PerfilCompleto::setRutaCarpetaDeFotos(const char* valor) {
+    copiarTexto(rutaCarpetaDeFotos, valor);
+}
+
+void PerfilCompleto::inicializarFotos(int cantidad) {
+    delete[] fotos;
+    cantidadDeFotos = cantidad;
+    if (cantidad > 0) {
+        fotos = new FotoConLikes[cantidad];
+    } else {
+        fotos = nullptr;
+    }
+}
+
+const char* PerfilCompleto::getRutaCarpetaDeFotos() const {
+    return rutaCarpetaDeFotos;
+}
+
+int PerfilCompleto::getCantidadDeFotos() const {
+    return cantidadDeFotos;
+}
+
+FotoConLikes& PerfilCompleto::getFotoEnPosicion(int posicion) {
+    return fotos[posicion];
+}
