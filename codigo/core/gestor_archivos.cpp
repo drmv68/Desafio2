@@ -4,12 +4,6 @@
 
 using namespace std;
 
-// ============================================================
-// core/gestor_archivos.cpp
-// Fase 1 - Funcionalidad I: Carga de Datos.
-// leerPerfilCompleto(), actualizarLikes(), escribirNuevoMensaje()
-// siguen pendientes para las siguientes funcionalidades.
-
 static char* extraerCampo(const char* linea, int& inicio, char delimitador) {
     int fin = inicio;
     while (linea[fin] != delimitador && linea[fin] != '\0') {
@@ -27,6 +21,16 @@ static char* extraerCampo(const char* linea, int& inicio, char delimitador) {
     return campo;
 }
 
+static void quitarRetornoDeCarroSiExiste(char* texto) {
+    int longitud = 0;
+    while (texto[longitud] != '\0') {
+        longitud++;
+    }
+    if (longitud > 0 && texto[longitud - 1] == '\r') {
+        texto[longitud - 1] = '\0';
+    }
+}
+
 static bool textosIguales(const char* primero, const char* segundo) {
     int posicion = 0;
     while (primero[posicion] != '\0' && segundo[posicion] != '\0') {
@@ -36,20 +40,6 @@ static bool textosIguales(const char* primero, const char* segundo) {
         posicion++;
     }
     return primero[posicion] == segundo[posicion];
-}
-
-// Si el archivo se guardo en Windows (saltos de linea "\r\n" en vez de "\n"),
-// getline() deja un '\r' pegado al final del ultimo campo de cada linea. Esta
-// funcion lo recorta si aparece, para que de igual si el .txt se edito en
-// Windows o en Linux/Mac.
-static void quitarRetornoDeCarroSiExiste(char* texto) {
-    int longitud = 0;
-    while (texto[longitud] != '\0') {
-        longitud++;
-    }
-    if (longitud > 0 && texto[longitud - 1] == '\r') {
-        texto[longitud - 1] = '\0';
-    }
 }
 
 static void construirRutaDePerfil(const char* idUsuario, char* rutaDestino, int tamanoMaximo) {
@@ -91,43 +81,26 @@ GestorArchivos::~GestorArchivos() {
     delete[] arregloUsuariosLigeros;
 }
 
-// Funcion perteneciente a la clase GestorArchivos
 bool GestorArchivos::cargarIndiceUsuarios(const char* rutaArchivo) {
-    // Estado inicial: rutaArchivo = "estaticos_y_db/indice.txt". totalUsuarios = 0.
-
     ifstream archivoLectura(rutaArchivo);
     if (!archivoLectura.is_open()) {
         cout << "Error critico no se pudo abrir la base de datos ligera." << endl;
         return false;
     }
 
-    // Leemos la primera linea que debe contener el numero total de usuarios registrados
     archivoLectura >> this->totalUsuarios;
-    // [Debugger] El operador >> saca el primer numero del .txt.
-    // Estado: totalUsuarios = 3 (ejemplo). OJO: el cursor del archivo queda justo
-    // ANTES del salto de linea, >> nunca se come el '\n'.
-
     archivoLectura.ignore();
-    // [Debugger] Sin esta linea, el primer getline() de abajo leeria una linea
-    // VACIA (el '\n' que dejo el >> anterior) y todo el arreglo quedaria
-    // desfasado un campo. Este es el bug mas comun de mezclar >> con getline().
 
     this->arregloUsuariosLigeros = new UsuarioLigero[this->totalUsuarios];
-    // [Debugger] Se pide memoria dinamica (Heap).
-    // Estado: arregloUsuariosLigeros apunta a un bloque de 3 casilleros, cada uno
-    // ya inicializado por el constructor por defecto de UsuarioLigero (punteros en nullptr).
 
     const int TAM_MAX_LINEA = 256;
     char buffer[TAM_MAX_LINEA];
 
     int explorador = 0;
-
-    // Ciclo para recorrer el archivo hasta llenarlo
     while (explorador < this->totalUsuarios) {
         iteracionesDadas++;
 
         archivoLectura.getline(buffer, TAM_MAX_LINEA);
-        // Usamos getline (no >>) el nombre puede traer espacios
         quitarRetornoDeCarroSiExiste(buffer);
 
         int cursor = 0;
@@ -143,7 +116,6 @@ bool GestorArchivos::cargarIndiceUsuarios(const char* rutaArchivo) {
         delete[] contrasenaLeida;
         delete[] nombreLeido;
         explorador++;
-
     }
 
     archivoLectura.close();
@@ -159,14 +131,6 @@ int GestorArchivos::getTotalUsuarios() const {
 const UsuarioLigero& GestorArchivos::getUsuarioLigero(int indice) const {
     return arregloUsuariosLigeros[indice];
 }
-
-// ============================================================
-// Fase 2 - Funcionalidad IV: perfil completo (fotos + likes).
-// Formato de "estaticos_y_db/perfiles/<id>.txt":
-//   linea 1: ruta de la carpeta donde estan las fotos de ese usuario
-//   linea 2: cantidad de fotos
-//   lineas siguientes, una por foto: nombreDeArchivo;cantidadDeLikes;esPublica(0 o 1)
-// ============================================================
 
 bool GestorArchivos::leerPerfilCompleto(const char* idUsuario, PerfilCompleto& perfilDestino) const {
     iteracionesDadas++;
@@ -295,8 +259,5 @@ unsigned long long GestorArchivos::getIteraciones() const {
 }
 
 std::size_t GestorArchivos::getMemoriaReservada() const {
-    // Aporte propio de GestorArchivos: el arreglo de UsuarioLigero que posee.
-    // (Igual que AdminAmistades::getMemoriaReservada(), esto NO es la memoria
-    // total del programa; cada modulo solo reporta lo suyo.)
     return sizeof(*this) + static_cast<std::size_t>(totalUsuarios) * sizeof(UsuarioLigero);
 }

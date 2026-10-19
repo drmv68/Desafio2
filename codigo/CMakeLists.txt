@@ -20,6 +20,8 @@ add_executable(desafioDOS_UdeABook main.cpp
     modulos_dinamicos/visor_perfiles.cpp
     modulos_dinamicos/gestor_mensajes.h
     modulos_dinamicos/gestor_mensajes.cpp
+    modulos_dinamicos/menu.h
+    modulos_dinamicos/menu.cpp
 )
 
 # La app lee rutas relativas tipo "estaticos_y_db/indice.txt", pero Qt Creator

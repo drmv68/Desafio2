@@ -13,6 +13,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/desafioDOS_UdeABook.dir/modulos_dinamicos/autenticacion.cpp.obj.d"
   "CMakeFiles/desafioDOS_UdeABook.dir/modulos_dinamicos/gestor_mensajes.cpp.obj"
   "CMakeFiles/desafioDOS_UdeABook.dir/modulos_dinamicos/gestor_mensajes.cpp.obj.d"
+  "CMakeFiles/desafioDOS_UdeABook.dir/modulos_dinamicos/menu.cpp.obj"
+  "CMakeFiles/desafioDOS_UdeABook.dir/modulos_dinamicos/menu.cpp.obj.d"
   "CMakeFiles/desafioDOS_UdeABook.dir/modulos_dinamicos/visor_perfiles.cpp.obj"
   "CMakeFiles/desafioDOS_UdeABook.dir/modulos_dinamicos/visor_perfiles.cpp.obj.d"
   "desafioDOS_UdeABook.exe"

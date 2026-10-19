@@ -3,10 +3,6 @@
 
 using namespace std;
 
-// ============================================================
-// modulos_dinamicos/autenticacion.cpp
-// ============================================================
-
 static bool textosIguales(const char* primero, const char* segundo) {
     int posicion = 0;
     while (primero[posicion] != '\0' && segundo[posicion] != '\0') {
@@ -18,10 +14,6 @@ static bool textosIguales(const char* primero, const char* segundo) {
     return primero[posicion] == segundo[posicion];
 }
 
-// Convierte un texto tipo "1001" en el numero 1001, a mano: sin atoi, para no
-// meter ninguna funcion de libreria extra. AdminAmistades identifica a cada
-// usuario con un int; GestorArchivos lo identifica con texto (char*). Esta
-// funcion es el puente entre esas dos formas de guardar el mismo id.
 static int convertirTextoANumero(const char* texto) {
     int numero = 0;
     int posicion = 0;
@@ -52,9 +44,6 @@ bool Autenticacion::iniciarSesion(const GestorArchivos& baseDatos) {
     cout << "Contrasena: ";
     cin.getline(contrasenaQueEscribioElUsuario, TAM_MAX_TEXTO);
 
-    // Recorre TODO el indice comparando id por id. Se detiene apenas encuentra
-    // una coincidencia (posicionEncontrada deja de ser -1 y la condicion del
-    // while ya no se cumple).
     int posicionEncontrada = -1;
     int posicionActual = 0;
     while (posicionActual < baseDatos.getTotalUsuarios() && posicionEncontrada == -1) {
@@ -81,9 +70,6 @@ bool Autenticacion::iniciarSesion(const GestorArchivos& baseDatos) {
         return false;
     }
 
-    // Guarda una copia propia del id (no un puntero prestado del arreglo de
-    // GestorArchivos), siguiendo el mismo estilo de copia manual que ya usa
-    // estructuras_base.cpp.
     delete[] idDelUsuarioActivo;
     idDelUsuarioActivo = nullptr;
 
@@ -119,9 +105,6 @@ void Autenticacion::mostrarMejoresAmigos(const AdminAmistades& redDeAmistades) c
     int mejorAmigoEncontrado = -1;
     int mayorCantidadDeAmigosComunes = -1;
 
-    // Recorre TODOS los usuarios que conoce AdminAmistades. De esos, se queda
-    // solo con los que YA son amigos (sonAmigos), y entre esos busca el que
-    // comparte mas amigos en comun con el usuario activo.
     int posicionActual = 0;
     while (posicionActual < redDeAmistades.getCantidadUsuarios()) {
         iteracionesDadas++;

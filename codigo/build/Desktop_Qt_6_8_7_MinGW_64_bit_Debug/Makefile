@@ -734,6 +734,30 @@ modulos_dinamicos/gestor_mensajes.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\pruebas_solarte.dir\build.make CMakeFiles/pruebas_solarte.dir/modulos_dinamicos/gestor_mensajes.cpp.s
 .PHONY : modulos_dinamicos/gestor_mensajes.cpp.s
 
+modulos_dinamicos/menu.obj: modulos_dinamicos/menu.cpp.obj
+.PHONY : modulos_dinamicos/menu.obj
+
+# target to build an object file
+modulos_dinamicos/menu.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\desafioDOS_UdeABook.dir\build.make CMakeFiles/desafioDOS_UdeABook.dir/modulos_dinamicos/menu.cpp.obj
+.PHONY : modulos_dinamicos/menu.cpp.obj
+
+modulos_dinamicos/menu.i: modulos_dinamicos/menu.cpp.i
+.PHONY : modulos_dinamicos/menu.i
+
+# target to preprocess a source file
+modulos_dinamicos/menu.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\desafioDOS_UdeABook.dir\build.make CMakeFiles/desafioDOS_UdeABook.dir/modulos_dinamicos/menu.cpp.i
+.PHONY : modulos_dinamicos/menu.cpp.i
+
+modulos_dinamicos/menu.s: modulos_dinamicos/menu.cpp.s
+.PHONY : modulos_dinamicos/menu.s
+
+# target to generate assembly for a file
+modulos_dinamicos/menu.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\desafioDOS_UdeABook.dir\build.make CMakeFiles/desafioDOS_UdeABook.dir/modulos_dinamicos/menu.cpp.s
+.PHONY : modulos_dinamicos/menu.cpp.s
+
 modulos_dinamicos/visor_perfiles.obj: modulos_dinamicos/visor_perfiles.cpp.obj
 .PHONY : modulos_dinamicos/visor_perfiles.obj
 
@@ -846,6 +870,9 @@ help:
 	@echo ... modulos_dinamicos/gestor_mensajes.obj
 	@echo ... modulos_dinamicos/gestor_mensajes.i
 	@echo ... modulos_dinamicos/gestor_mensajes.s
+	@echo ... modulos_dinamicos/menu.obj
+	@echo ... modulos_dinamicos/menu.i
+	@echo ... modulos_dinamicos/menu.s
 	@echo ... modulos_dinamicos/visor_perfiles.obj
 	@echo ... modulos_dinamicos/visor_perfiles.i
 	@echo ... modulos_dinamicos/visor_perfiles.s

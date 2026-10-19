@@ -3,10 +3,6 @@
 
 using namespace std;
 
-// ============================================================
-// modulos_dinamicos/visor_perfiles.cpp
-// ============================================================
-
 static bool textosIguales(const char* primero, const char* segundo) {
     int posicion = 0;
     while (primero[posicion] != '\0' && segundo[posicion] != '\0') {
@@ -18,9 +14,6 @@ static bool textosIguales(const char* primero, const char* segundo) {
     return primero[posicion] == segundo[posicion];
 }
 
-// Mismo puente texto->numero que usa Autenticacion (son dos modulos
-// distintos, cada uno con su propia copia de la funcion, a proposito:
-// la regla del proyecto es no compartir auxiliares entre modulos).
 static int convertirTextoANumero(const char* texto) {
     int numero = 0;
     int posicion = 0;
@@ -85,11 +78,6 @@ void VisorPerfiles::mostrarCarrusel(const GestorArchivos& baseDatos, const Admin
     int idPropioComoNumero = convertirTextoANumero(idPropio);
     int idEncontradoComoNumero = convertirTextoANumero(idEncontrado);
     bool sonAmigos = redDeAmistades.sonAmigos(idPropioComoNumero, idEncontradoComoNumero);
-    // [Nota] Si idPropio == idEncontrado (alguien visitando su propio perfil),
-    // sonAmigos() da false (AdminAmistades no considera a nadie amigo de si
-    // mismo), asi que igual solo veria lo publico. Si mas adelante quieren
-    // que uno pueda ver TODAS sus propias fotos, aqui es donde hay que
-    // agregar ese caso aparte.
 
     cout << "Carpeta de fotos: " << perfilEncontrado.getRutaCarpetaDeFotos() << endl;
 

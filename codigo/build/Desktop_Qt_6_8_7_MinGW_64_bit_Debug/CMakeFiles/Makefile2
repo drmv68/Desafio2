@@ -110,12 +110,12 @@ clean: CMakeFiles/pruebas_solarte.dir/clean
 CMakeFiles/desafioDOS_UdeABook.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\desafioDOS_UdeABook.dir\build.make CMakeFiles/desafioDOS_UdeABook.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\desafioDOS_UdeABook.dir\build.make CMakeFiles/desafioDOS_UdeABook.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=C:\Users\darim\Documents\UDEA\Info2\desafio2\codigo\build\Desktop_Qt_6_8_7_MinGW_64_bit_Debug\CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9 "Built target desafioDOS_UdeABook"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=C:\Users\darim\Documents\UDEA\Info2\desafio2\codigo\build\Desktop_Qt_6_8_7_MinGW_64_bit_Debug\CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10 "Built target desafioDOS_UdeABook"
 .PHONY : CMakeFiles/desafioDOS_UdeABook.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/desafioDOS_UdeABook.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\darim\Documents\UDEA\Info2\desafio2\codigo\build\Desktop_Qt_6_8_7_MinGW_64_bit_Debug\CMakeFiles 9
+	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\darim\Documents\UDEA\Info2\desafio2\codigo\build\Desktop_Qt_6_8_7_MinGW_64_bit_Debug\CMakeFiles 10
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 CMakeFiles/desafioDOS_UdeABook.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\darim\Documents\UDEA\Info2\desafio2\codigo\build\Desktop_Qt_6_8_7_MinGW_64_bit_Debug\CMakeFiles 0
 .PHONY : CMakeFiles/desafioDOS_UdeABook.dir/rule
@@ -864,7 +864,7 @@ CMakeFiles/ContinuousSubmit.dir/clean:
 CMakeFiles/pruebas_solarte.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\pruebas_solarte.dir\build.make CMakeFiles/pruebas_solarte.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\pruebas_solarte.dir\build.make CMakeFiles/pruebas_solarte.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=C:\Users\darim\Documents\UDEA\Info2\desafio2\codigo\build\Desktop_Qt_6_8_7_MinGW_64_bit_Debug\CMakeFiles --progress-num=10,11,12,13 "Built target pruebas_solarte"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=C:\Users\darim\Documents\UDEA\Info2\desafio2\codigo\build\Desktop_Qt_6_8_7_MinGW_64_bit_Debug\CMakeFiles --progress-num=11,12,13,14 "Built target pruebas_solarte"
 .PHONY : CMakeFiles/pruebas_solarte.dir/all
 
 # Build rule for subdir invocation for target.

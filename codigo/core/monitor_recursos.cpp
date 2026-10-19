@@ -4,10 +4,6 @@
 
 using namespace std;
 
-// ============================================================
-// core/monitor_recursos.cpp
-// ============================================================
-
 MonitorRecursos::MonitorRecursos() {
     iteracionesAcumuladasDesdeElInicio = 0;
     memoriaAcumuladaDesdeElInicio = 0;
