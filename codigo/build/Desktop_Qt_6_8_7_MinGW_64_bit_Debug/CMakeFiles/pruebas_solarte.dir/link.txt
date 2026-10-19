@@ -1,0 +1,3 @@
+C:\Qt\Tools\CMake_64\bin\cmake.exe -E rm -f CMakeFiles\pruebas_solarte.dir/objects.a
+C:\Qt\Tools\mingw1310_64\bin\ar.exe qc CMakeFiles\pruebas_solarte.dir/objects.a @CMakeFiles\pruebas_solarte.dir\objects1.rsp
+C:\Qt\Tools\mingw1310_64\bin\g++.exe -g -Wl,--whole-archive CMakeFiles\pruebas_solarte.dir/objects.a -Wl,--no-whole-archive -o pruebas_solarte.exe -Wl,--out-implib,libpruebas_solarte.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\pruebas_solarte.dir\linkLibs.rsp

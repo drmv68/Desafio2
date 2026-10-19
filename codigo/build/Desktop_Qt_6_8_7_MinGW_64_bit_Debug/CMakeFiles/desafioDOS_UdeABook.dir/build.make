@@ -180,6 +180,20 @@ CMakeFiles/desafioDOS_UdeABook.dir/modulos_dinamicos/gestor_mensajes.cpp.s: cmak
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/desafioDOS_UdeABook.dir/modulos_dinamicos/gestor_mensajes.cpp.s"
 	C:\Qt\Tools\mingw1310_64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Users\darim\Documents\UDEA\Info2\desafio2\codigo\modulos_dinamicos\gestor_mensajes.cpp -o CMakeFiles\desafioDOS_UdeABook.dir\modulos_dinamicos\gestor_mensajes.cpp.s
 
+CMakeFiles/desafioDOS_UdeABook.dir/modulos_dinamicos/menu.cpp.obj: CMakeFiles/desafioDOS_UdeABook.dir/flags.make
+CMakeFiles/desafioDOS_UdeABook.dir/modulos_dinamicos/menu.cpp.obj: C:/Users/darim/Documents/UDEA/Info2/desafio2/codigo/modulos_dinamicos/menu.cpp
+CMakeFiles/desafioDOS_UdeABook.dir/modulos_dinamicos/menu.cpp.obj: CMakeFiles/desafioDOS_UdeABook.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:\Users\darim\Documents\UDEA\Info2\desafio2\codigo\build\Desktop_Qt_6_8_7_MinGW_64_bit_Debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/desafioDOS_UdeABook.dir/modulos_dinamicos/menu.cpp.obj"
+	C:\Qt\Tools\mingw1310_64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/desafioDOS_UdeABook.dir/modulos_dinamicos/menu.cpp.obj -MF CMakeFiles\desafioDOS_UdeABook.dir\modulos_dinamicos\menu.cpp.obj.d -o CMakeFiles\desafioDOS_UdeABook.dir\modulos_dinamicos\menu.cpp.obj -c C:\Users\darim\Documents\UDEA\Info2\desafio2\codigo\modulos_dinamicos\menu.cpp
+
+CMakeFiles/desafioDOS_UdeABook.dir/modulos_dinamicos/menu.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/desafioDOS_UdeABook.dir/modulos_dinamicos/menu.cpp.i"
+	C:\Qt\Tools\mingw1310_64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\darim\Documents\UDEA\Info2\desafio2\codigo\modulos_dinamicos\menu.cpp > CMakeFiles\desafioDOS_UdeABook.dir\modulos_dinamicos\menu.cpp.i
+
+CMakeFiles/desafioDOS_UdeABook.dir/modulos_dinamicos/menu.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/desafioDOS_UdeABook.dir/modulos_dinamicos/menu.cpp.s"
+	C:\Qt\Tools\mingw1310_64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Users\darim\Documents\UDEA\Info2\desafio2\codigo\modulos_dinamicos\menu.cpp -o CMakeFiles\desafioDOS_UdeABook.dir\modulos_dinamicos\menu.cpp.s
+
 # Object files for target desafioDOS_UdeABook
 desafioDOS_UdeABook_OBJECTS = \
 "CMakeFiles/desafioDOS_UdeABook.dir/main.cpp.obj" \
@@ -189,7 +203,8 @@ desafioDOS_UdeABook_OBJECTS = \
 "CMakeFiles/desafioDOS_UdeABook.dir/modulos_dinamicos/autenticacion.cpp.obj" \
 "CMakeFiles/desafioDOS_UdeABook.dir/modulos_dinamicos/admin_amistades.cpp.obj" \
 "CMakeFiles/desafioDOS_UdeABook.dir/modulos_dinamicos/visor_perfiles.cpp.obj" \
-"CMakeFiles/desafioDOS_UdeABook.dir/modulos_dinamicos/gestor_mensajes.cpp.obj"
+"CMakeFiles/desafioDOS_UdeABook.dir/modulos_dinamicos/gestor_mensajes.cpp.obj" \
+"CMakeFiles/desafioDOS_UdeABook.dir/modulos_dinamicos/menu.cpp.obj"
 
 # External object files for target desafioDOS_UdeABook
 desafioDOS_UdeABook_EXTERNAL_OBJECTS =
@@ -202,11 +217,12 @@ desafioDOS_UdeABook.exe: CMakeFiles/desafioDOS_UdeABook.dir/modulos_dinamicos/au
 desafioDOS_UdeABook.exe: CMakeFiles/desafioDOS_UdeABook.dir/modulos_dinamicos/admin_amistades.cpp.obj
 desafioDOS_UdeABook.exe: CMakeFiles/desafioDOS_UdeABook.dir/modulos_dinamicos/visor_perfiles.cpp.obj
 desafioDOS_UdeABook.exe: CMakeFiles/desafioDOS_UdeABook.dir/modulos_dinamicos/gestor_mensajes.cpp.obj
+desafioDOS_UdeABook.exe: CMakeFiles/desafioDOS_UdeABook.dir/modulos_dinamicos/menu.cpp.obj
 desafioDOS_UdeABook.exe: CMakeFiles/desafioDOS_UdeABook.dir/build.make
 desafioDOS_UdeABook.exe: CMakeFiles/desafioDOS_UdeABook.dir/linkLibs.rsp
 desafioDOS_UdeABook.exe: CMakeFiles/desafioDOS_UdeABook.dir/objects1.rsp
 desafioDOS_UdeABook.exe: CMakeFiles/desafioDOS_UdeABook.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=C:\Users\darim\Documents\UDEA\Info2\desafio2\codigo\build\Desktop_Qt_6_8_7_MinGW_64_bit_Debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Linking CXX executable desafioDOS_UdeABook.exe"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=C:\Users\darim\Documents\UDEA\Info2\desafio2\codigo\build\Desktop_Qt_6_8_7_MinGW_64_bit_Debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Linking CXX executable desafioDOS_UdeABook.exe"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles\desafioDOS_UdeABook.dir\link.txt --verbose=$(VERBOSE)
 	C:\Qt\Tools\CMake_64\bin\cmake.exe -E copy_directory C:/Users/darim/Documents/UDEA/Info2/desafio2/codigo/estaticos_y_db C:/Users/darim/Documents/UDEA/Info2/desafio2/codigo/build/Desktop_Qt_6_8_7_MinGW_64_bit_Debug/estaticos_y_db
 

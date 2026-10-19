@@ -1,0 +1,5 @@
+estaticos_y_db/fotos/1007
+3
+perfil.jpg;20;1
+diseno_robotica.jpg;17;1
+cumpleanos_familia.jpg;13;0

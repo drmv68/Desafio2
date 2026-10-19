@@ -1,5 +1,3 @@
-// Ejemplo de integracion con cinco usuarios en memoria, sin persistencia.
-// El main definitivo cargara los datos con GestorArchivos y usara la fecha actual.
 #include "../modulos_dinamicos/gestor_mensajes.h"
 #include <iostream>
 #include <limits>

@@ -1,23 +1,27 @@
 #ifndef AUTENTICACION_H
 #define AUTENTICACION_H
 
+#include <cstddef>
 #include "../core/gestor_archivos.h"
 #include "../core/estructuras_base.h"
-
-// ============================================================
-// modulos_dinamicos/autenticacion.h
-// Modulo 2 del analisis: "Ingreso a la plataforma y
-// visualizacion de mejores amigos".
-// Pide credenciales, retorna el booleano de acceso y ejecuta la
-// matematica de prioridad (amigos en comun: simple / x2.5 / x3.5).
-//
-// FASE MACRO: solo el cascaron de la clase. Sin logica interna
-// todavia, eso se arma cuando definamos el formato de archivo
-// de credenciales en GestorArchivos.
-// ============================================================
+#include "admin_amistades.h"
 
 class Autenticacion {
-    // Futuros metodos: iniciarSesion(), calcularPrioridadAmigos(), mostrarMejoresAmigos()
+private:
+    char* idDelUsuarioActivo;
+    mutable unsigned long long iteracionesDadas;
+
+public:
+    Autenticacion();
+    ~Autenticacion();
+
+    bool iniciarSesion(const GestorArchivos& baseDatos);
+    const char* getIdDelUsuarioActivo() const;
+    void mostrarMejoresAmigos(const AdminAmistades& redDeAmistades) const;
+
+    void reiniciarIteraciones() const;
+    unsigned long long getIteraciones() const;
+    std::size_t getMemoriaReservada() const;
 };
 
-#endif // AUTENTICACION_H
+#endif

@@ -1,0 +1,3 @@
+estaticos_y_db/fotos/1003
+1
+mascota.jpg;6;1
