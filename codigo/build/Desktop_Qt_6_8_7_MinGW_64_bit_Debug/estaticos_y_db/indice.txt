@@ -1,4 +1,9 @@
-3
+8
 1001;pass123;daniel mosquera
 1002;clave456;juan perez
 1003;abc789;ana maria lopez
+1004;carlos2026;carlos gomez
+1005;sofiapass;sofia ramirez
+1006;luis123;luis fernandez
+1007;maria777;maria camila
+1008;mateo888;mateo herrera

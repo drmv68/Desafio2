@@ -187,9 +187,6 @@ int AdminAmistades::contarAmigosComunes(int primero, int segundo) const {
 int AdminAmistades::sugerirAmigos(int usuario, int k, int* ids, int* comunes) const {
     int activo = buscarUsuario(usuario);
     if (activo < 0 || k < 1 || k > 20 || !ids || !comunes || ids == comunes) return -1;
-    // Solo se recorren las filas de los amigos del usuario: O(n*d + n*k),
-    // siendo d su numero de amigos. Se conservan unicamente los k mejores.
-    // Desempate por ID para que el resultado sea reproducible.
     int* conteos = new int[cantidad_]();
     for (int amigo = 0; amigo < cantidad_; ++amigo) {
         ++iteraciones_;

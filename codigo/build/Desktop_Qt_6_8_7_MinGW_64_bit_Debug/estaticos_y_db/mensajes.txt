@@ -1,0 +1,6 @@
+5
+1;1002;1001;10;8;2026;Hola Daniel, bienvenido a Ude@Book!;1
+2;1002;1001;15;9;2026;Ya revise el informe de Informatica II, quedo excelente.;0
+3;1003;1001;28;9;2026;Hola! Recuerda subir las fotos de la salida de campo.;0
+4;1002;1001;5;10;2026;Nos vemos en la sustentacion este viernes.;0
+5;1001;1002;6;10;2026;Listo Juan, nos encontramos en el bloque 19.;1

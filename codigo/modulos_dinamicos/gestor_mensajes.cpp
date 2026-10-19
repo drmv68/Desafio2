@@ -48,7 +48,6 @@ bool GestorMensajes::validarTexto(const char* texto, std::size_t& bytes) const {
     if (!texto) return false;
     int caracteres = 0;
     bool contenido = false;
-    // UTF-8: una letra acentuada cuenta como un caracter, no como dos bytes.
     while (texto[bytes]) {
         ++iteraciones_;
         unsigned char inicial = static_cast<unsigned char>(texto[bytes]);
@@ -68,7 +67,6 @@ bool GestorMensajes::validarTexto(const char* texto, std::size_t& bytes) const {
     return contenido;
 }
 void GestorMensajes::insertar(Mensaje* mensaje) {
-    // Crecimiento geometrico: reserva al necesitarlo y solo mueve punteros.
     if (cantidad_ == capacidad_) {
         if (capacidad_ > std::numeric_limits<int>::max() / 2)
             throw std::length_error("Demasiados mensajes");
@@ -79,7 +77,6 @@ void GestorMensajes::insertar(Mensaje* mensaje) {
         mensajes_ = arreglo; capacidad_ = nueva;
     }
     int posicion = cantidad_;
-    // Insercion cronologica; ID desempata mensajes del mismo dia.
     while (posicion > 0) {
         ++iteraciones_;
         const Mensaje& anterior = *mensajes_[posicion - 1];
@@ -91,7 +88,7 @@ void GestorMensajes::insertar(Mensaje* mensaje) {
     mensajes_[posicion] = mensaje;
     ++cantidad_;
     bytesMensajes_ += sizeof(Mensaje) + mensaje->bytes_ + 1;
-    iteraciones_ += mensaje->bytes_ + 1; // Copia del texto realizada por el constructor.
+    iteraciones_ += mensaje->bytes_ + 1;
     if (mensaje->id_ > ultimoId_) ultimoId_ = mensaje->id_;
 }
 bool GestorMensajes::cargarMensaje(const AdminAmistades& red, int id, int emisor, int receptor,
@@ -131,7 +128,7 @@ int GestorMensajes::leerNuevos(const AdminAmistades& red, int receptor, std::ost
         }
     }
     if (!total) salida << "No hay mensajes nuevos.\n";
-    if (!salida) return -1; // No marcar si no pudieron mostrarse todos.
+    if (!salida) return -1;
     for (int i = 0; i < cantidad_; ++i) {
         ++iteraciones_;
         if (mensajes_[i]->receptor_ == receptor) mensajes_[i]->leido_ = true;
@@ -141,7 +138,6 @@ int GestorMensajes::leerNuevos(const AdminAmistades& red, int receptor, std::ost
 int GestorMensajes::buscarPorRangoDeFechas(const AdminAmistades& red, int receptor,
     const Fecha& inicio, const Fecha& fin, std::ostream& salida) const {
     if (!(inicio <= fin) || red.buscarUsuario(receptor) < 0) return -1;
-    // Busqueda binaria del inicio: evita recorrer fechas anteriores al rango.
     int bajo = 0, alto = cantidad_;
     while (bajo < alto) {
         ++iteraciones_;
@@ -196,7 +192,7 @@ void GestorMensajes::mostrarMenu(const AdminAmistades& red, int usuario, const F
         salida << "\nMENSAJES\n1. Enviar\n2. Leer nuevos\n3. Buscar por fechas\n0. Volver\nOpcion: ";
         if (!leerNumero(entrada, opcion)) { salida << "Ingresa un numero.\n"; continue; }
         if (opcion == 1) {
-            char nombre[1025], texto[2049]; // 512 caracteres UTF-8, maximo 4 bytes cada uno.
+            char nombre[1025], texto[2049];
             salida << "Nombre del amigo: ";
             if (!leerLinea(entrada, nombre, sizeof nombre)) { salida << "Nombre invalido.\n"; continue; }
             salida << "Texto (hasta 512 caracteres): ";

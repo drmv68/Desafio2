@@ -122,13 +122,27 @@ void Autenticacion::mostrarMejoresAmigos(const AdminAmistades& redDeAmistades) c
         posicionActual++;
     }
 
-    if (mejorAmigoEncontrado == -1) {
-        cout << "Todavia no tiene amigos confirmados." << endl;
-        return;
+    if (mejorAmigoEncontrado != -1) {
+        cout << "Tu amigo con mas prioridad es: " << redDeAmistades.getNombre(mejorAmigoEncontrado)
+             << " (comparten " << mayorCantidadDeAmigosComunes << " amigos en comun)." << endl;
+    } else {
+        cout << "Todavia no tienes amigos confirmados." << endl;
     }
 
-    cout << "Tu amigo con mas prioridad es: " << redDeAmistades.getNombre(mejorAmigoEncontrado)
-         << " (comparten " << mayorCantidadDeAmigosComunes << " amigos en comun)." << endl;
+    const int CANTIDAD_CANDIDATOS = 3;
+    int idsCandidatos[CANTIDAD_CANDIDATOS];
+    int comunesCandidatos[CANTIDAD_CANDIDATOS];
+    int totalCandidatos = redDeAmistades.sugerirAmigos(idPropioComoNumero, CANTIDAD_CANDIDATOS, idsCandidatos, comunesCandidatos);
+
+    if (totalCandidatos > 0) {
+        cout << "\nCandidatos sugeridos para conectar:" << endl;
+        int i = 0;
+        while (i < totalCandidatos) {
+            cout << "  " << (i + 1) << ". " << redDeAmistades.getNombre(idsCandidatos[i])
+                 << " (" << comunesCandidatos[i] << " amigos en comun)" << endl;
+            i++;
+        }
+    }
 }
 
 void Autenticacion::reiniciarIteraciones() const {

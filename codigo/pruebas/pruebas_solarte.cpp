@@ -1,5 +1,3 @@
-// Cinco pruebas pequenas. <sstream> simula la consola solo en este ejecutable;
-// los modulos de la solucion no usan strings ni contenedores STL.
 #include "../modulos_dinamicos/gestor_mensajes.h"
 #include <iostream>
 #include <sstream>
@@ -22,7 +20,7 @@ void cargarCinco(AdminAmistades& red) {
     exigir(red.cargarAmistad(20, 30));
 }
 void solicitudes() {
-    AdminAmistades red(2); // Fuerza crecimiento conservando nombres y relaciones.
+    AdminAmistades red(2);
     cargarCinco(red);
     exigir(!red.cargarUsuario(10, "otro") && !red.cargarUsuario(99, "juan"));
     exigir(!red.cargarUsuario(0, "nadie") && !red.cargarUsuario(99, "   "));
@@ -31,7 +29,7 @@ void solicitudes() {
     exigir(!red.envioDeSolicitud(10, "desconocido"));
     exigir(red.envioDeSolicitud(10, "ana"));
     exigir(!red.envioDeSolicitud(10, 30) && !red.envioDeSolicitud(30, 10));
-    exigir(!red.aceptarSolicitud(10, 30)); // Solo el receptor puede aceptar.
+    exigir(!red.aceptarSolicitud(10, 30));
     exigir(red.aceptarSolicitud(30, 10));
     exigir(red.sonAmigos(10, 30) && red.sonAmigos(30, 10));
     exigir(!red.haySolicitud(10, 30));
@@ -76,7 +74,7 @@ void validacionMensajes() {
     exigir(!mensajes.enviarMensaje(red, 10, "daniel", "", fecha));
     exigir(!mensajes.enviarMensaje(red, 10, "daniel", " \t\n", fecha));
     exigir(!mensajes.enviarMensaje(red, 10, "daniel", nullptr, fecha));
-    char texto[1027]; // 512 letras acentuadas UTF-8, luego una mas.
+    char texto[1027];
     for (int i = 0; i < 513; ++i) { texto[2*i] = '\xC3'; texto[2*i+1] = '\xA1'; }
     texto[1024] = '\0';
     exigir(mensajes.enviarMensaje(red, 10, "daniel", texto, fecha));
@@ -110,7 +108,7 @@ void fechasYLectura() {
     exigir(!mensajes.getMensaje(1)->estaLeido());
     exigir(mensajes.leerNuevos(red, 20, salida) == 3);
     exigir(mensajes.leerNuevos(red, 20, salida) == 0);
-    exigir(!mensajes.getMensaje(2)->estaLeido()); // El mensaje de Juan sigue nuevo.
+    exigir(!mensajes.getMensaje(2)->estaLeido());
     exigir(mensajes.enviarMensaje(red, 10, "daniel", "siguiente id", Fecha(2, 10, 2026)));
     exigir(mensajes.getMensaje(5)->getId() == 6);
 }
@@ -132,7 +130,7 @@ void menus() {
     mensajes.mostrarMenu(red, 20, Fecha(16, 10, 2026), leer, salida);
     exigir(mensajes.getMensaje(0)->estaLeido());
     std::istringstream eof("");
-    red.mostrarMenu(10, eof, salida); // EOF debe terminar, sin bucle infinito.
+    red.mostrarMenu(10, eof, salida);
     exigir(red.getMemoriaReservada() > sizeof(red));
     exigir(mensajes.getMemoriaReservada() > sizeof(mensajes));
     exigir(red.getIteraciones() > 0 && mensajes.getIteraciones() > 0);

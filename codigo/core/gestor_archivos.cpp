@@ -1,8 +1,20 @@
 #include "gestor_archivos.h"
 #include <iostream>
 #include <fstream>
+#include "../modulos_dinamicos/admin_amistades.h"
+#include "../modulos_dinamicos/gestor_mensajes.h"
 
 using namespace std;
+
+static int convertirTextoANumero(const char* texto) {
+    int numero = 0;
+    int posicion = 0;
+    while (texto[posicion] != '\0') {
+        numero = numero * 10 + (texto[posicion] - '0');
+        posicion++;
+    }
+    return numero;
+}
 
 static char* extraerCampo(const char* linea, int& inicio, char delimitador) {
     int fin = inicio;
@@ -247,6 +259,133 @@ bool GestorArchivos::guardarCambioDeLike(const char* idUsuario, const char* nomb
     }
 
     archivoEscritura.close();
+    return true;
+}
+
+bool GestorArchivos::cargarAmistades(const char* rutaArchivo, AdminAmistades& red) const {
+    ifstream archivoLectura(rutaArchivo);
+    if (!archivoLectura.is_open()) {
+        return false;
+    }
+
+    int totalAmistades = 0;
+    archivoLectura >> totalAmistades;
+    archivoLectura.ignore();
+
+    const int TAM_MAX_LINEA = 256;
+    char buffer[TAM_MAX_LINEA];
+
+    int i = 0;
+    while (i < totalAmistades && archivoLectura.getline(buffer, TAM_MAX_LINEA)) {
+        iteracionesDadas++;
+        quitarRetornoDeCarroSiExiste(buffer);
+
+        int cursor = 0;
+        char* id1Leido = extraerCampo(buffer, cursor, ';');
+        char* id2Leido = extraerCampo(buffer, cursor, ';');
+
+        int id1 = convertirTextoANumero(id1Leido);
+        int id2 = convertirTextoANumero(id2Leido);
+
+        red.cargarAmistad(id1, id2);
+
+        delete[] id1Leido;
+        delete[] id2Leido;
+        i++;
+    }
+
+    archivoLectura.close();
+    return true;
+}
+
+bool GestorArchivos::cargarSolicitudes(const char* rutaArchivo, AdminAmistades& red) const {
+    ifstream archivoLectura(rutaArchivo);
+    if (!archivoLectura.is_open()) {
+        return false;
+    }
+
+    int totalSolicitudes = 0;
+    archivoLectura >> totalSolicitudes;
+    archivoLectura.ignore();
+
+    const int TAM_MAX_LINEA = 256;
+    char buffer[TAM_MAX_LINEA];
+
+    int i = 0;
+    while (i < totalSolicitudes && archivoLectura.getline(buffer, TAM_MAX_LINEA)) {
+        iteracionesDadas++;
+        quitarRetornoDeCarroSiExiste(buffer);
+
+        int cursor = 0;
+        char* idEmisorLeido = extraerCampo(buffer, cursor, ';');
+        char* idReceptorLeido = extraerCampo(buffer, cursor, ';');
+
+        int emisor = convertirTextoANumero(idEmisorLeido);
+        int receptor = convertirTextoANumero(idReceptorLeido);
+
+        red.cargarSolicitud(emisor, receptor);
+
+        delete[] idEmisorLeido;
+        delete[] idReceptorLeido;
+        i++;
+    }
+
+    archivoLectura.close();
+    return true;
+}
+
+bool GestorArchivos::cargarMensajes(const char* rutaArchivo, const AdminAmistades& red,
+                                    GestorMensajes& moduloMensajes) const {
+    ifstream archivoLectura(rutaArchivo);
+    if (!archivoLectura.is_open()) {
+        return false;
+    }
+
+    int totalMensajes = 0;
+    archivoLectura >> totalMensajes;
+    archivoLectura.ignore();
+
+    const int TAM_MAX_LINEA = 2048;
+    char buffer[TAM_MAX_LINEA];
+
+    int i = 0;
+    while (i < totalMensajes && archivoLectura.getline(buffer, TAM_MAX_LINEA)) {
+        iteracionesDadas++;
+        quitarRetornoDeCarroSiExiste(buffer);
+
+        int cursor = 0;
+        char* idLeido = extraerCampo(buffer, cursor, ';');
+        char* emisorLeido = extraerCampo(buffer, cursor, ';');
+        char* receptorLeido = extraerCampo(buffer, cursor, ';');
+        char* diaLeido = extraerCampo(buffer, cursor, ';');
+        char* mesLeido = extraerCampo(buffer, cursor, ';');
+        char* anioLeido = extraerCampo(buffer, cursor, ';');
+        char* textoLeido = extraerCampo(buffer, cursor, ';');
+        char* leidoTexto = extraerCampo(buffer, cursor, ';');
+
+        int id = convertirTextoANumero(idLeido);
+        int emisor = convertirTextoANumero(emisorLeido);
+        int receptor = convertirTextoANumero(receptorLeido);
+        int dia = convertirTextoANumero(diaLeido);
+        int mes = convertirTextoANumero(mesLeido);
+        int anio = convertirTextoANumero(anioLeido);
+        bool estaLeido = (leidoTexto[0] == '1');
+
+        moduloMensajes.cargarMensaje(red, id, emisor, receptor, Fecha(dia, mes, anio), textoLeido, estaLeido);
+
+        delete[] idLeido;
+        delete[] emisorLeido;
+        delete[] receptorLeido;
+        delete[] diaLeido;
+        delete[] mesLeido;
+        delete[] anioLeido;
+        delete[] textoLeido;
+        delete[] leidoTexto;
+
+        i++;
+    }
+
+    archivoLectura.close();
     return true;
 }
 

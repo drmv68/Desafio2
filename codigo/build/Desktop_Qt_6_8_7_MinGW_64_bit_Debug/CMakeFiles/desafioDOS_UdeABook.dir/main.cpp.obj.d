@@ -142,16 +142,19 @@ CMakeFiles/desafioDOS_UdeABook.dir/main.cpp.obj: \
  C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/ostream.tcc \
  C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/istream \
  C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/istream.tcc \
- C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/limits \
- C:\Users\darim\Documents\UDEA\Info2\desafio2\codigo\core/monitor_recursos.h \
  C:\Users\darim\Documents\UDEA\Info2\desafio2\codigo\core/gestor_archivos.h \
  C:\Users\darim\Documents\UDEA\Info2\desafio2\codigo\core/estructuras_base.h \
  C:\Users\darim\Documents\UDEA\Info2\desafio2\codigo\core/monitor_recursos.h \
- C:\Users\darim\Documents\UDEA\Info2\desafio2\codigo\core/estructuras_base.h \
+ C:\Users\darim\Documents\UDEA\Info2\desafio2\codigo\core/monitor_recursos.h \
  C:\Users\darim\Documents\UDEA\Info2\desafio2\codigo\modulos_dinamicos/autenticacion.h \
  C:/Users/darim/Documents/UDEA/Info2/desafio2/codigo/core/gestor_archivos.h \
  C:/Users/darim/Documents/UDEA/Info2/desafio2/codigo/core/estructuras_base.h \
  C:\Users\darim\Documents\UDEA\Info2\desafio2\codigo\modulos_dinamicos/admin_amistades.h \
  C:\Users\darim\Documents\UDEA\Info2\desafio2\codigo\modulos_dinamicos/admin_amistades.h \
+ C:\Users\darim\Documents\UDEA\Info2\desafio2\codigo\modulos_dinamicos/visor_perfiles.h \
+ C:\Users\darim\Documents\UDEA\Info2\desafio2\codigo\modulos_dinamicos/gestor_mensajes.h \
+ C:\Users\darim\Documents\UDEA\Info2\desafio2\codigo\modulos_dinamicos/menu.h \
+ C:/Users/darim/Documents/UDEA/Info2/desafio2/codigo/core/monitor_recursos.h \
+ C:\Users\darim\Documents\UDEA\Info2\desafio2\codigo\modulos_dinamicos/autenticacion.h \
  C:\Users\darim\Documents\UDEA\Info2\desafio2\codigo\modulos_dinamicos/visor_perfiles.h \
  C:\Users\darim\Documents\UDEA\Info2\desafio2\codigo\modulos_dinamicos/gestor_mensajes.h

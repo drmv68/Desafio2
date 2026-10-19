@@ -105,6 +105,9 @@ bool Menu::iniciar(const char* rutaIndiceUsuarios) {
     }
 
     cargarUsuariosEnRedDeAmistades();
+    baseDatos.cargarAmistades("estaticos_y_db/amistades.txt", moduloAmistades);
+    baseDatos.cargarSolicitudes("estaticos_y_db/solicitudes.txt", moduloAmistades);
+    baseDatos.cargarMensajes("estaticos_y_db/mensajes.txt", moduloAmistades, moduloMensajes);
 
     bool accesoAutorizado = moduloAcceso.iniciarSesion(baseDatos);
     if (!accesoAutorizado) {
@@ -112,11 +115,13 @@ bool Menu::iniciar(const char* rutaIndiceUsuarios) {
         return false;
     }
 
+    moduloAcceso.mostrarMejoresAmigos(moduloAmistades);
+
     bool ejecutando = true;
     while (ejecutando) {
 
         cout << "\n===== MENU PRINCIPAL =====" << endl;
-        cout << "1. Ver mi amigo de mayor prioridad" << endl;
+        cout << "1. Ver mi amigo de mayor prioridad y candidatos" << endl;
         cout << "2. Visitar el perfil de alguien" << endl;
         cout << "3. Administrar amistades" << endl;
         cout << "4. Ver sugerencias de amistad" << endl;
@@ -138,6 +143,8 @@ bool Menu::iniciar(const char* rutaIndiceUsuarios) {
         } else {
             ejecutarOpcion(opcionElegida);
             mostrarReporteDeTodos();
+            cout << "Presiona Enter para continuar...";
+            cin.get();
             monitor.limpiarPantalla();
         }
     }
