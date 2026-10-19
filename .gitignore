@@ -1,0 +1,5 @@
+
+# Archivos temporales de Qt
+/codigo/build/
+/codigo/.qtcreator/
+*.user
