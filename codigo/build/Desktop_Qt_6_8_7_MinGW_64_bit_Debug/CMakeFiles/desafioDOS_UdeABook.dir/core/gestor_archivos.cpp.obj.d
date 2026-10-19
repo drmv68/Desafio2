@@ -149,4 +149,7 @@ CMakeFiles/desafioDOS_UdeABook.dir/core/gestor_archivos.cpp.obj: \
  C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/codecvt.h \
  C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/x86_64-w64-mingw32/bits/basic_file.h \
  C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/x86_64-w64-mingw32/bits/c++io.h \
- C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/fstream.tcc
+ C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/fstream.tcc \
+ C:/Users/darim/Documents/UDEA/Info2/desafio2/codigo/modulos_dinamicos/admin_amistades.h \
+ C:/Users/darim/Documents/UDEA/Info2/desafio2/codigo/modulos_dinamicos/gestor_mensajes.h \
+ C:/Users/darim/Documents/UDEA/Info2/desafio2/codigo/modulos_dinamicos/admin_amistades.h

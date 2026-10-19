@@ -1,8 +1,5 @@
-/users/udeabook/luis_fernandez/albums
-4
-Publico;perfil.png;5;1;1;8;2026;1024
-Publico;carrera_atletismo.png;9;1;1;8;2026;1024
-Amigos;asado_amigos.png;11;0;1;8;2026;1024
-Privado;personal.png;0;2;1;8;2026;2048
-ALBUM;Vacio;1
-USUARIO;usuario1006@udeabook.local;Medellin;Colombia;1;1;2000;1;8;2026
+estaticos_y_db/fotos/1006
+3
+perfil.jpg;5;1
+carrera_atletismo.jpg;9;1
+asado_amigos.jpg;11;0

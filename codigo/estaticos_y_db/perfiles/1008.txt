@@ -1,8 +1,5 @@
-/users/udeabook/mateo_herrera/albums
-4
-Publico;perfil.png;6;1;1;8;2026;1024
-Publico;biblioteca_central.png;4;1;1;8;2026;1024
-Amigos;torneo_futbol.png;15;0;1;8;2026;1024
-Privado;personal.png;0;2;1;8;2026;2048
-ALBUM;Vacio;1
-USUARIO;usuario1008@udeabook.local;Medellin;Colombia;1;1;2000;1;8;2026
+estaticos_y_db/fotos/1008
+3
+perfil.jpg;6;1
+biblioteca_central.jpg;4;1
+torneo_futbol.jpg;15;0

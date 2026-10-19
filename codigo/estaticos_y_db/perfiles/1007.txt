@@ -1,8 +1,5 @@
-/users/udeabook/maria_camila/albums
-4
-Publico;perfil.png;20;1;1;8;2026;1024
-Publico;diseno_robotica.png;17;1;1;8;2026;1024
-Amigos;cumpleanos_familia.png;13;0;1;8;2026;1024
-Privado;personal.png;0;2;1;8;2026;2048
-ALBUM;Vacio;1
-USUARIO;usuario1007@udeabook.local;Medellin;Colombia;1;1;2000;1;8;2026
+estaticos_y_db/fotos/1007
+3
+perfil.jpg;20;1
+diseno_robotica.jpg;17;1
+cumpleanos_familia.jpg;13;0

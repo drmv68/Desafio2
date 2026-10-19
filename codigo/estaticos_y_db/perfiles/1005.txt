@@ -1,9 +1,6 @@
-/users/udeabook/sofia_ramirez/albums
-5
-Publico;perfil.png;18;1;1;8;2026;1024
-Publico;seminario_sistemas.png;8;1;1;8;2026;1024
-Amigos;tarde_cafe.png;12;0;1;8;2026;1024
-Amigos;viaje_cartagena.png;25;0;1;8;2026;1024
-Privado;personal.png;0;2;1;8;2026;2048
-ALBUM;Vacio;1
-USUARIO;usuario1005@udeabook.local;Medellin;Colombia;1;1;2000;1;8;2026
+estaticos_y_db/fotos/1005
+4
+perfil.jpg;18;1
+seminario_sistemas.jpg;8;1
+tarde_cafe.jpg;12;0
+viaje_cartagena.jpg;25;0

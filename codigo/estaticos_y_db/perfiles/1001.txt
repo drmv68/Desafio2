@@ -1,7 +1,4 @@
-/users/udeabook/daniel_mosquera/albums
-3
-Publico;perfil.png;3;1;1;8;2026;1024
-Amigos;viaje_amigos.png;1;0;1;8;2026;1024
-Privado;personal.png;0;2;1;8;2026;2048
-ALBUM;Vacio;1
-USUARIO;usuario1001@udeabook.local;Medellin;Colombia;1;1;2000;1;8;2026
+estaticos_y_db/fotos/1001
+2
+perfil.jpg;3;1
+viaje_amigos.jpg;1;0

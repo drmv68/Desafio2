@@ -1,221 +1,158 @@
 #include "autenticacion.h"
-#include "../core/monitor_recursos.h"
 #include <iostream>
-#include <limits>
 
-namespace {
-bool iguales(const char *a, const char *b) {
-    if (!a || !b)
-        return false;
-    while (*a && *a == *b) {
-        MonitorRecursos::registrarIteracion(2);
-        ++a;
-        ++b;
+using namespace std;
+
+static bool textosIguales(const char* primero, const char* segundo) {
+    int posicion = 0;
+    while (primero[posicion] != '\0' && segundo[posicion] != '\0') {
+        if (primero[posicion] != segundo[posicion]) {
+            return false;
+        }
+        posicion++;
     }
-    return *a == *b;
+    return primero[posicion] == segundo[posicion];
 }
-int numero(const char *texto) {
-    int n = 0;
-    if (!texto)
-        return 0;
-    while (*texto) {
-        MonitorRecursos::registrarIteracion(2);
-        if (*texto < '0' || *texto > '9' ||
-            n > (std::numeric_limits<int>::max() - (*texto - '0')) / 10)
-            return 0;
-        n = n * 10 + (*texto++ - '0');
+
+static int convertirTextoANumero(const char* texto) {
+    int numero = 0;
+    int posicion = 0;
+    while (texto[posicion] != '\0') {
+        numero = numero * 10 + (texto[posicion] - '0');
+        posicion++;
     }
-    return n;
+    return numero;
 }
-} // namespace
-Autenticacion::Autenticacion()
-    : idDelUsuarioActivo(nullptr), amigosMostrados{}, cantidadMostrada(0),
-      actualizacionUsada(false), generador(std::random_device{}()) {
-    MonitorRecursos::registrarComponente(8);
+
+Autenticacion::Autenticacion() {
+    idDelUsuarioActivo = nullptr;
+    iteracionesDadas = 0;
 }
+
 Autenticacion::~Autenticacion() {
     delete[] idDelUsuarioActivo;
 }
-bool Autenticacion::iniciarSesion(const GestorArchivos &base) {
-    return iniciarSesion(base, std::cin, std::cout);
-}
-bool Autenticacion::iniciarSesion(const GestorArchivos &base, std::istream &entrada,
-                                  std::ostream &salida) {
+
+bool Autenticacion::iniciarSesion(const GestorArchivos& baseDatos) {
+    const int TAM_MAX_TEXTO = 100;
+    char idQueEscribioElUsuario[TAM_MAX_TEXTO];
+    char contrasenaQueEscribioElUsuario[TAM_MAX_TEXTO];
+
+    cout << "Id de usuario: ";
+    cin.getline(idQueEscribioElUsuario, TAM_MAX_TEXTO);
+
+    cout << "Contrasena: ";
+    cin.getline(contrasenaQueEscribioElUsuario, TAM_MAX_TEXTO);
+
+    int posicionEncontrada = -1;
+    int posicionActual = 0;
+    while (posicionActual < baseDatos.getTotalUsuarios() && posicionEncontrada == -1) {
+        iteracionesDadas++;
+
+        const UsuarioLigero& usuarioActual = baseDatos.getUsuarioLigero(posicionActual);
+        if (textosIguales(usuarioActual.getIdUsuario(), idQueEscribioElUsuario)) {
+            posicionEncontrada = posicionActual;
+        }
+
+        posicionActual++;
+    }
+
+    if (posicionEncontrada == -1) {
+        cout << "Ese id no existe." << endl;
+        return false;
+    }
+
+    const UsuarioLigero& usuarioEncontrado = baseDatos.getUsuarioLigero(posicionEncontrada);
+    bool contrasenaCorrecta = textosIguales(usuarioEncontrado.getContrasena(), contrasenaQueEscribioElUsuario);
+
+    if (!contrasenaCorrecta) {
+        cout << "Contrasena incorrecta." << endl;
+        return false;
+    }
+
     delete[] idDelUsuarioActivo;
     idDelUsuarioActivo = nullptr;
-    cantidadMostrada = 0;
-    actualizacionUsada = false;
-    MonitorRecursos::registrarComponente(2);
-    char id[100], clave[100];
-    salida << "Id de usuario: ";
-    if (!entrada.getline(id, sizeof id))
-        return false;
-    salida << "Contrasena: ";
-    if (!entrada.getline(clave, sizeof clave))
-        return false;
-    for (int i = 0; i < base.getTotalUsuarios(); ++i) {
-        MonitorRecursos::registrarIteracion(2);
 
-        const UsuarioLigero &u = base.getUsuarioLigero(i);
-        if (!iguales(u.getIdUsuario(), id) || !iguales(u.getContrasena(), clave))
-            continue;
-        int n = 0;
-        while (id[n]) {
-            MonitorRecursos::registrarIteracion(2);
-            ++n;
-        }
-        idDelUsuarioActivo = new char[n + 1];
-        for (int j = 0; j <= n; ++j) {
-            MonitorRecursos::registrarIteracion(2);
-            idDelUsuarioActivo[j] = id[j];
-        }
-        salida << "Bienvenido, " << u.getNombreUsuario() << ".\n";
-        return true;
+    int longitudDelId = 0;
+    while (usuarioEncontrado.getIdUsuario()[longitudDelId] != '\0') {
+        longitudDelId++;
     }
-    salida << "Credenciales incorrectas.\n";
-    return false;
-}
-const char *Autenticacion::getIdDelUsuarioActivo() const {
-    return idDelUsuarioActivo;
-}
-bool Autenticacion::mostrarMejoresAmigos(const GestorArchivos &base, const AdminAmistades &red,
-                                         bool actualizar, std::ostream &salida) {
-    if (!idDelUsuarioActivo)
-        return false;
-    if (actualizar && actualizacionUsada) {
-        salida << "Las fotos de amigos solo pueden actualizarse una vez por sesion.\n";
-        return false;
-    }
-    if (actualizar)
-        actualizacionUsada = true;
-    int activo = numero(idDelUsuarioActivo), n = red.getCantidadUsuarios();
-    int *candidatos = new int[n];
-    int *pesos = nullptr;
-    try {
-        pesos = new int[n];
-    } catch (...) {
-        delete[] candidatos;
-        throw;
-    }
-    MemoriaTemporal memoria(sizeof(int) * static_cast<std::size_t>(n) * 2);
-    int total = 0, nuevos = 0;
-    for (int i = 0; i < n; ++i) {
-        MonitorRecursos::registrarIteracion(2);
 
-        int id = red.getIdEnPosicion(i);
-        if (!red.sonAmigos(activo, id))
-            continue;
-        bool anterior = false;
-        for (int j = 0; j < cantidadMostrada; ++j) {
-            MonitorRecursos::registrarIteracion(2);
-            if (id == amigosMostrados[j])
-                anterior = true;
-        }
-        candidatos[total] = id;
-        int comunes = red.contarAmigosComunes(activo, id);
-        pesos[total] = comunes <= 10 ? 2 : comunes <= 20 ? 5 : 7;
-        // En la actualizacion se prefieren amigos que no estaban en el grupo previo.
-        if (!anterior)
-            ++nuevos;
-        ++total;
+    idDelUsuarioActivo = new char[longitudDelId + 1];
+    int posicionDeCopia = 0;
+    while (posicionDeCopia < longitudDelId) {
+        idDelUsuarioActivo[posicionDeCopia] = usuarioEncontrado.getIdUsuario()[posicionDeCopia];
+        posicionDeCopia++;
     }
-    if (actualizar && nuevos == 0) {
-        salida << "No hay otros amigos para formar un grupo diferente.\n";
-        delete[] candidatos;
-        delete[] pesos;
-        return false;
-    }
-    int anteriores[3];
-    int cantidadAnterior = cantidadMostrada;
-    for (int i = 0; i < cantidadAnterior; ++i) {
-        MonitorRecursos::registrarIteracion(2);
-        anteriores[i] = amigosMostrados[i];
-    }
-    cantidadMostrada = 0;
-    int objetivo = total < 3 ? total : 3;
-    for (int seleccion = 0; seleccion < objetivo; ++seleccion) {
-        MonitorRecursos::registrarIteracion(2);
+    idDelUsuarioActivo[longitudDelId] = '\0';
 
-        bool preferirNuevos = actualizar && nuevos > 0;
-        int suma = 0;
-        for (int i = 0; i < total; ++i) {
-            MonitorRecursos::registrarIteracion(2);
-
-            bool anterior = false;
-            for (int j = 0; j < cantidadAnterior; ++j) {
-                MonitorRecursos::registrarIteracion(2);
-                if (candidatos[i] == anteriores[j])
-                    anterior = true;
-            }
-            if (pesos[i] && (!preferirNuevos || !anterior))
-                suma += pesos[i];
-        }
-        MonitorRecursos::registrarComponente(8);
-        int sorteo = std::uniform_int_distribution<int>(1, suma)(generador);
-        for (int i = 0; i < total; ++i) {
-            MonitorRecursos::registrarIteracion(2);
-
-            bool anterior = false;
-            for (int j = 0; j < cantidadAnterior; ++j) {
-                MonitorRecursos::registrarIteracion(2);
-                if (candidatos[i] == anteriores[j])
-                    anterior = true;
-            }
-            if (!pesos[i] || (preferirNuevos && anterior))
-                continue;
-            sorteo -= pesos[i];
-            if (sorteo <= 0) {
-                amigosMostrados[cantidadMostrada++] = candidatos[i];
-                pesos[i] = 0;
-                if (!anterior)
-                    --nuevos;
-                break;
-            }
-        }
-    }
-    delete[] candidatos;
-    delete[] pesos;
-    salida << "\nFotos de tus amigos (seleccion aleatoria ponderada):\n";
-    for (int i = 0; i < cantidadMostrada; ++i) {
-        MonitorRecursos::registrarIteracion(2);
-
-        int id = amigosMostrados[i];
-        for (int j = 0; j < base.getTotalUsuarios(); ++j) {
-            MonitorRecursos::registrarIteracion(2);
-
-            const UsuarioLigero &u = base.getUsuarioLigero(j);
-            if (numero(u.getIdUsuario()) != id)
-                continue;
-            char rutaFoto[4200];
-            salida << red.getNombre(id) << " | ";
-            if (base.leerRutaFotoPerfil(u.getIdUsuario(), rutaFoto, sizeof rutaFoto))
-                salida << rutaFoto << '\n';
-            else
-                salida << "Perfil sin ruta disponible.\n";
-            break;
-        }
-    }
-    if (!cantidadMostrada)
-        salida << "Todavia no tienes amigos confirmados.\n";
+    cout << "Bienvenido, " << usuarioEncontrado.getNombreUsuario() << "." << endl;
     return true;
 }
-int Autenticacion::getAmigoMostrado(int i) const {
-    return i >= 0 && i < cantidadMostrada ? amigosMostrados[i] : -1;
+
+const char* Autenticacion::getIdDelUsuarioActivo() const {
+    return idDelUsuarioActivo;
 }
-void Autenticacion::reiniciarIteraciones() const {
-    MonitorRecursos::reiniciarModulo(2);
-}
-unsigned long long Autenticacion::getIteraciones() const {
-    return MonitorRecursos::getIteracionesModulo(2);
-}
-std::size_t Autenticacion::getMemoriaReservada() const {
-    std::size_t n = 0;
-    if (idDelUsuarioActivo) {
-        while (idDelUsuarioActivo[n]) {
-            MonitorRecursos::registrarIteracion(2);
-            ++n;
-        }
-        ++n;
+
+void Autenticacion::mostrarMejoresAmigos(const AdminAmistades& redDeAmistades) const {
+    if (idDelUsuarioActivo == nullptr) {
+        cout << "Todavia no ha iniciado sesion nadie." << endl;
+        return;
     }
-    return sizeof(*this) + n;
+
+    int idPropioComoNumero = convertirTextoANumero(idDelUsuarioActivo);
+
+    int mejorAmigoEncontrado = -1;
+    int mayorCantidadDeAmigosComunes = -1;
+
+    int posicionActual = 0;
+    while (posicionActual < redDeAmistades.getCantidadUsuarios()) {
+        iteracionesDadas++;
+
+        int idCandidato = redDeAmistades.getIdEnPosicion(posicionActual);
+
+        if (redDeAmistades.sonAmigos(idPropioComoNumero, idCandidato)) {
+            int cantidadDeAmigosComunes = redDeAmistades.contarAmigosComunes(idPropioComoNumero, idCandidato);
+            if (cantidadDeAmigosComunes > mayorCantidadDeAmigosComunes) {
+                mayorCantidadDeAmigosComunes = cantidadDeAmigosComunes;
+                mejorAmigoEncontrado = idCandidato;
+            }
+        }
+
+        posicionActual++;
+    }
+
+    if (mejorAmigoEncontrado != -1) {
+        cout << "Tu amigo con mas prioridad es: " << redDeAmistades.getNombre(mejorAmigoEncontrado)
+             << " (comparten " << mayorCantidadDeAmigosComunes << " amigos en comun)." << endl;
+    } else {
+        cout << "Todavia no tienes amigos confirmados." << endl;
+    }
+
+    const int CANTIDAD_CANDIDATOS = 3;
+    int idsCandidatos[CANTIDAD_CANDIDATOS];
+    int comunesCandidatos[CANTIDAD_CANDIDATOS];
+    int totalCandidatos = redDeAmistades.sugerirAmigos(idPropioComoNumero, CANTIDAD_CANDIDATOS, idsCandidatos, comunesCandidatos);
+
+    if (totalCandidatos > 0) {
+        cout << "\nCandidatos sugeridos para conectar:" << endl;
+        int i = 0;
+        while (i < totalCandidatos) {
+            cout << "  " << (i + 1) << ". " << redDeAmistades.getNombre(idsCandidatos[i])
+                 << " (" << comunesCandidatos[i] << " amigos en comun)" << endl;
+            i++;
+        }
+    }
+}
+
+void Autenticacion::reiniciarIteraciones() const {
+    iteracionesDadas = 0;
+}
+
+unsigned long long Autenticacion::getIteraciones() const {
+    return iteracionesDadas;
+}
+
+std::size_t Autenticacion::getMemoriaReservada() const {
+    return sizeof(*this);
 }

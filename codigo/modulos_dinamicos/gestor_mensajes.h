@@ -2,66 +2,73 @@
 #define GESTOR_MENSAJES_H
 
 #include "admin_amistades.h"
-#include "../core/estructuras_base.h"
 #include <cstddef>
 #include <iosfwd>
 
+class Fecha {
+public:
+    Fecha(int dia = 1, int mes = 1, int anio = 2000);
+    int getDia() const;
+    int getMes() const;
+    int getAnio() const;
+    bool operator==(const Fecha& otra) const;
+    bool operator<=(const Fecha& otra) const;
+private:
+    int valor_;
+};
+
 class Mensaje {
-  public:
-    Mensaje(const Mensaje &otro);
+public:
+    Mensaje(const Mensaje& otro);
     ~Mensaje();
-    Mensaje &operator=(const Mensaje &) = delete;
+    Mensaje& operator=(const Mensaje&) = delete;
     int getId() const;
     int getEmisor() const;
     int getReceptor() const;
-    const Fecha &getFecha() const;
-    const char *getTexto() const;
+    const Fecha& getFecha() const;
+    const char* getTexto() const;
     bool estaLeido() const;
-
-  private:
+private:
     friend class GestorMensajes;
-    Mensaje(int id, int emisor, int receptor, const Fecha &fecha, const char *texto,
-            std::size_t bytes, bool leido);
+    Mensaje(int id, int emisor, int receptor, const Fecha& fecha,
+            const char* texto, std::size_t bytes, bool leido);
     int id_, emisor_, receptor_;
     Fecha fecha_;
-    char *texto_;
+    char* texto_;
     std::size_t bytes_;
     bool leido_;
 };
 
 class GestorMensajes {
-  public:
+public:
     GestorMensajes();
     ~GestorMensajes();
-    GestorMensajes(const GestorMensajes &) = delete;
-    GestorMensajes &operator=(const GestorMensajes &) = delete;
+    GestorMensajes(const GestorMensajes&) = delete;
+    GestorMensajes& operator=(const GestorMensajes&) = delete;
 
-    bool cargarMensaje(const AdminAmistades &red, int id, int emisor, int receptor,
-                       const Fecha &fecha, const char *texto, bool leido);
-    bool enviarMensaje(const AdminAmistades &red, int emisor, const char *destinatario,
-                       const char *texto, const Fecha &fecha);
-    int leerNuevos(const AdminAmistades &red, int receptor, std::ostream &salida);
-    int buscarPorRangoDeFechas(const AdminAmistades &red, int receptor, const Fecha &inicio,
-                               const Fecha &fin, std::ostream &salida) const;
-    void mostrarMenu(const AdminAmistades &red, int usuario, const Fecha &fechaActual,
-                     std::istream &entrada, std::ostream &salida,
-                     void (*alTerminar)(void *) = nullptr, void *contexto = nullptr);
+    bool cargarMensaje(const AdminAmistades& red, int id, int emisor, int receptor,
+                       const Fecha& fecha, const char* texto, bool leido);
+    bool enviarMensaje(const AdminAmistades& red, int emisor,
+                       const char* destinatario, const char* texto, const Fecha& fecha);
+    int leerNuevos(const AdminAmistades& red, int receptor, std::ostream& salida);
+    int buscarPorRangoDeFechas(const AdminAmistades& red, int receptor,
+        const Fecha& inicio, const Fecha& fin, std::ostream& salida) const;
+    void mostrarMenu(const AdminAmistades& red, int usuario, const Fecha& fechaActual,
+                     std::istream& entrada, std::ostream& salida);
     int getCantidad() const;
-    const Mensaje *getMensaje(int posicion) const;
-    bool hayCambios() const;
-    void confirmarGuardado();
+    const Mensaje* getMensaje(int posicion) const;
     void reiniciarIteraciones() const;
     unsigned long long getIteraciones() const;
     std::size_t getMemoriaReservada() const;
 
-  private:
-    bool cambiosPendientes_;
-    Mensaje **mensajes_;
+private:
+    Mensaje** mensajes_;
     int cantidad_, capacidad_, ultimoId_;
     std::size_t bytesMensajes_;
-    bool validarTexto(const char *texto, std::size_t &bytes) const;
-    void insertar(Mensaje *mensaje);
-    void imprimir(const AdminAmistades &red, const Mensaje &mensaje, std::ostream &salida) const;
+    mutable unsigned long long iteraciones_;
+    bool validarTexto(const char* texto, std::size_t& bytes) const;
+    void insertar(Mensaje* mensaje);
+    void imprimir(const AdminAmistades& red, const Mensaje& mensaje, std::ostream& salida) const;
 };
 
 #endif

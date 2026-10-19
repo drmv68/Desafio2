@@ -1,143 +1,153 @@
-#include "../core/monitor_recursos.h"
 #include "menu.h"
 #include <iostream>
 #include <limits>
-#include <stdexcept>
 
-namespace {
-int numero(const char *texto) {
-    int n = 0;
-    while (*texto) {
-        MonitorRecursos::registrarIteracion(0);
-        if (*texto < '0' || *texto > '9' ||
-            n > (std::numeric_limits<int>::max() - (*texto - '0')) / 10)
-            throw std::invalid_argument("ID de usuario invalido");
-        n = n * 10 + (*texto++ - '0');
+using namespace std;
+
+static int convertirTextoANumero(const char* texto) {
+    int numero = 0;
+    int posicion = 0;
+    while (texto[posicion] != '\0') {
+        numero = numero * 10 + (texto[posicion] - '0');
+        posicion++;
     }
-    return n;
+    return numero;
 }
-} // namespace
-Menu::Menu(GestorArchivos &b, Autenticacion &a, AdminAmistades &r, VisorPerfiles &p,
-           GestorMensajes &m, MonitorRecursos &monitorInicial)
-    : baseDatos(b), moduloAcceso(a), moduloAmistades(r), moduloPerfiles(p), moduloMensajes(m),
-      monitor(monitorInicial) {
+
+Menu::Menu(GestorArchivos& baseDatosInicial, Autenticacion& accesoInicial,
+           AdminAmistades& amistadesInicial, VisorPerfiles& perfilesInicial,
+           GestorMensajes& mensajesInicial, MonitorRecursos& monitorInicial)
+    : baseDatos(baseDatosInicial), moduloAcceso(accesoInicial), moduloAmistades(amistadesInicial),
+      moduloPerfiles(perfilesInicial), moduloMensajes(mensajesInicial), monitor(monitorInicial) {
 }
+
 void Menu::cargarUsuariosEnRedDeAmistades() {
-    for (int i = 0; i < baseDatos.getTotalUsuarios(); ++i) {
-        MonitorRecursos::registrarIteracion(0);
-        const UsuarioLigero &u = baseDatos.getUsuarioLigero(i);
-        if (!moduloAmistades.cargarUsuario(numero(u.getIdUsuario()), u.getNombreUsuario()))
-            throw std::runtime_error("Usuario duplicado o invalido al cargar la red");
+    int posicionDeCarga = 0;
+    while (posicionDeCarga < baseDatos.getTotalUsuarios()) {
+        const UsuarioLigero& usuarioActual = baseDatos.getUsuarioLigero(posicionDeCarga);
+        int idComoNumero = convertirTextoANumero(usuarioActual.getIdUsuario());
+        moduloAmistades.cargarUsuario(idComoNumero, usuarioActual.getNombreUsuario());
+        posicionDeCarga++;
     }
 }
+
 void Menu::mostrarReporteDeTodos() {
-    MonitorRecursos::pausarConteo(true);
-    const char *nombres[] = {"GestorArchivos", "AdminAmistades", "Autenticacion", "VisorPerfiles",
-                             "GestorMensajes"};
-    unsigned long long iteraciones[] = {
+    const int CANTIDAD_DE_MODULOS = 5;
+    const char* nombresDeModulos[CANTIDAD_DE_MODULOS] = {
+        "GestorArchivos", "AdminAmistades", "Autenticacion", "VisorPerfiles", "GestorMensajes"
+    };
+    unsigned long long iteracionesPorModulo[CANTIDAD_DE_MODULOS] = {
         baseDatos.getIteraciones(), moduloAmistades.getIteraciones(), moduloAcceso.getIteraciones(),
-        moduloPerfiles.getIteraciones(), moduloMensajes.getIteraciones()};
-    std::size_t memoria[] = {baseDatos.getMemoriaReservada(), moduloAmistades.getMemoriaReservada(),
-                             moduloAcceso.getMemoriaReservada(),
-                             moduloPerfiles.getMemoriaReservada(),
-                             moduloMensajes.getMemoriaReservada()};
-    MemoriaTemporal locales(sizeof(nombres) + sizeof(iteraciones) + sizeof(memoria) + sizeof(this));
-    monitor.mostrarReporte(nombres, iteraciones, memoria, 5);
+        moduloPerfiles.getIteraciones(), moduloMensajes.getIteraciones()
+    };
+    size_t memoriaPorModulo[CANTIDAD_DE_MODULOS] = {
+        baseDatos.getMemoriaReservada(), moduloAmistades.getMemoriaReservada(),
+        moduloAcceso.getMemoriaReservada(), moduloPerfiles.getMemoriaReservada(),
+        moduloMensajes.getMemoriaReservada()
+    };
+
+    monitor.mostrarReporte(nombresDeModulos, iteracionesPorModulo, memoriaPorModulo, CANTIDAD_DE_MODULOS);
+
     baseDatos.reiniciarIteraciones();
     moduloAmistades.reiniciarIteraciones();
     moduloAcceso.reiniciarIteraciones();
     moduloPerfiles.reiniciarIteraciones();
     moduloMensajes.reiniciarIteraciones();
-    MonitorRecursos::pausarConteo(false);
 }
-void Menu::terminarOperacion(void *contexto) {
-    MemoriaTemporal locales(2 * sizeof(void *));
-    Menu &menu = *static_cast<Menu *>(contexto);
-    if (!menu.baseDatos.guardarEstado(menu.moduloAmistades, menu.moduloMensajes))
-        throw std::runtime_error("No se pudo guardar: se conservaron los archivos anteriores. "
-                                 "Cambios pendientes en memoria");
-    menu.mostrarReporteDeTodos();
-}
-void Menu::ejecutarOpcion(int opcion) {
-    int activo = numero(moduloAcceso.getIdDelUsuarioActivo());
-    MemoriaTemporal locales(sizeof(opcion) + sizeof(activo) + sizeof(this));
-    if (opcion == 1) {
-        moduloAcceso.mostrarMejoresAmigos(baseDatos, moduloAmistades, true, std::cout);
-        terminarOperacion(this);
-    } else if (opcion == 2) {
-        char nombre[1025], id[100];
-        MemoriaTemporal textos(sizeof(nombre) + sizeof(id));
-        std::cout << "Nombre de la persona a visitar: ";
-        if (!std::cin.getline(nombre, sizeof nombre)) {
-            if (!std::cin.eof()) {
-                std::cin.clear();
-                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-            }
-            std::cout << "Nombre invalido.\n";
-        } else if (!moduloPerfiles.buscarPerfilPorNombre(baseDatos, nombre, id, sizeof id))
-            std::cout << "No existe ese usuario.\n";
-        else
+
+void Menu::ejecutarOpcion(int opcionElegida) {
+    int idPropioComoNumero = convertirTextoANumero(moduloAcceso.getIdDelUsuarioActivo());
+
+    if (opcionElegida == 1) {
+        moduloAcceso.mostrarMejoresAmigos(moduloAmistades);
+
+    } else if (opcionElegida == 2) {
+        char nombreBuscado[100];
+        cout << "Nombre de la persona a visitar: ";
+        cin.getline(nombreBuscado, 100);
+
+        char idEncontrado[100];
+        bool encontrado = moduloPerfiles.buscarPerfilPorNombre(baseDatos, nombreBuscado, idEncontrado);
+
+        if (!encontrado) {
+            cout << "No existe ningun usuario con ese nombre." << endl;
+        } else {
             moduloPerfiles.mostrarCarrusel(baseDatos, moduloAmistades,
-                                           moduloAcceso.getIdDelUsuarioActivo(), id, std::cin,
-                                           std::cout, terminarOperacion, this);
-        terminarOperacion(this);
-    } else if (opcion == 3)
-        moduloAmistades.mostrarMenu(activo, std::cin, std::cout, terminarOperacion, this);
-    else if (opcion == 4)
-        moduloAmistades.mostrarMenuSugerencias(activo, std::cin, std::cout, terminarOperacion,
-                                               this);
-    else if (opcion == 5) {
-        Fecha actual = Fecha::actual();
-        MemoriaTemporal fecha(sizeof(actual));
-        moduloMensajes.mostrarMenu(moduloAmistades, activo, actual, std::cin, std::cout,
-                                   terminarOperacion, this);
-    } else
-        std::cout << "Opcion invalida.\n";
+                moduloAcceso.getIdDelUsuarioActivo(), idEncontrado);
+
+            cout << "Dar like a una foto (nombre exacto, o vacio para omitir): ";
+            char nombreDeFoto[100];
+            cin.getline(nombreDeFoto, 100);
+            if (nombreDeFoto[0] != '\0') {
+                moduloPerfiles.darLike(baseDatos, idEncontrado, nombreDeFoto);
+            }
+        }
+
+    } else if (opcionElegida == 3) {
+        moduloAmistades.mostrarMenu(idPropioComoNumero, cin, cout);
+
+    } else if (opcionElegida == 4) {
+        moduloAmistades.mostrarMenuSugerencias(idPropioComoNumero, cin, cout);
+
+    } else if (opcionElegida == 5) {
+        moduloMensajes.mostrarMenu(moduloAmistades, idPropioComoNumero, Fecha(18, 10, 2026), cin, cout);
+
+    } else {
+        cout << "Opcion invalida." << endl;
+    }
 }
-bool Menu::iniciar(const char *rutaIndice) {
-    char ruta[1200];
-    MemoriaTemporal locales(sizeof(ruta) + sizeof(rutaIndice) + sizeof(this) + sizeof(int));
-    if (!baseDatos.cargarIndiceUsuarios(rutaIndice)) {
-        std::cout << "Indice inexistente o invalido: " << rutaIndice << '\n';
+
+bool Menu::iniciar(const char* rutaIndiceUsuarios) {
+    bool indiceCargado = baseDatos.cargarIndiceUsuarios(rutaIndiceUsuarios);
+    if (!indiceCargado) {
+        cout << "No se pudo cargar el indice de usuarios. Cerrando." << endl;
         return false;
     }
+
     cargarUsuariosEnRedDeAmistades();
-    if (!baseDatos.construirRuta("amistades.txt", ruta, sizeof ruta) ||
-        !baseDatos.cargarAmistades(ruta, moduloAmistades) ||
-        !baseDatos.construirRuta("solicitudes.txt", ruta, sizeof ruta) ||
-        !baseDatos.cargarSolicitudes(ruta, moduloAmistades) ||
-        !baseDatos.construirRuta("mensajes.txt", ruta, sizeof ruta) ||
-        !baseDatos.cargarMensajes(ruta, moduloAmistades, moduloMensajes)) {
-        std::cout
-            << "Archivos de relaciones o mensajes incompletos o invalidos. No se modificaron.\n";
+    baseDatos.cargarAmistades("estaticos_y_db/amistades.txt", moduloAmistades);
+    baseDatos.cargarSolicitudes("estaticos_y_db/solicitudes.txt", moduloAmistades);
+    baseDatos.cargarMensajes("estaticos_y_db/mensajes.txt", moduloAmistades, moduloMensajes);
+
+    bool accesoAutorizado = moduloAcceso.iniciarSesion(baseDatos);
+    if (!accesoAutorizado) {
+        cout << "Acceso no autorizado." << endl;
         return false;
     }
-    if (!moduloAcceso.iniciarSesion(baseDatos))
-        return false;
-    moduloAcceso.mostrarMejoresAmigos(baseDatos, moduloAmistades, false, std::cout);
-    mostrarReporteDeTodos();
-    MonitorRecursos::registrarComponente(2);
-    while (std::cin) {
-        MonitorRecursos::registrarIteracion(0);
-        std::cout
-            << "\nMENU PRINCIPAL\n1. Actualizar fotos de amigos (una vez)\n2. Visitar perfil\n"
-               "3. Administrar amistades\n4. Sugerencias de amistad\n5. Mensajes\n0. "
-               "Salir\nOpcion: ";
-        int opcion = -1;
-        if (!(std::cin >> opcion)) {
-            if (std::cin.eof())
-                break;
-            std::cin.clear();
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-            std::cout << "Ingresa un numero.\n";
+
+    moduloAcceso.mostrarMejoresAmigos(moduloAmistades);
+
+    bool ejecutando = true;
+    while (ejecutando) {
+
+        cout << "\n===== MENU PRINCIPAL =====" << endl;
+        cout << "1. Ver mi amigo de mayor prioridad y candidatos" << endl;
+        cout << "2. Visitar el perfil de alguien" << endl;
+        cout << "3. Administrar amistades" << endl;
+        cout << "4. Ver sugerencias de amistad" << endl;
+        cout << "5. Mensajes" << endl;
+        cout << "0. Salir" << endl;
+        cout << "Opcion: ";
+
+        int opcionElegida = -1;
+        if (!(cin >> opcionElegida)) {
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cout << "Ingresa un numero." << endl;
             continue;
         }
-        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-        if (!opcion)
-            break;
-        ejecutarOpcion(opcion);
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+        if (opcionElegida == 0) {
+            ejecutando = false;
+        } else {
+            ejecutarOpcion(opcionElegida);
+            mostrarReporteDeTodos();
+            cout << "Presiona Enter para continuar...";
+            cin.get();
+            monitor.limpiarPantalla();
+        }
     }
-    if (!baseDatos.guardarEstado(moduloAmistades, moduloMensajes))
-        throw std::runtime_error("No fue posible guardar al cerrar");
+
     return true;
 }
