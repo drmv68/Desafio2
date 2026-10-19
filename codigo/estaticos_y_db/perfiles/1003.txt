@@ -1,3 +1,6 @@
-estaticos_y_db/fotos/1003
-1
-mascota.jpg;6;1
+/users/udeabook/ana_maria_lopez/albums
+2
+Publico;mascota.png;6;1;1;8;2026;1024
+Privado;personal.png;0;2;1;8;2026;2048
+ALBUM;Vacio;1
+USUARIO;usuario1003@udeabook.local;Medellin;Colombia;1;1;2000;1;8;2026

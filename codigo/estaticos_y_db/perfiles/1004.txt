@@ -1,5 +1,8 @@
-estaticos_y_db/fotos/1004
-3
-perfil.jpg;4;1
-laboratorio_fisica.jpg;11;1
-concierto_rock.jpg;14;0
+/users/udeabook/carlos_gomez/albums
+4
+Publico;perfil.png;4;1;1;8;2026;1024
+Publico;laboratorio_fisica.png;11;1;1;8;2026;1024
+Amigos;concierto_rock.png;14;0;1;8;2026;1024
+Privado;personal.png;0;2;1;8;2026;2048
+ALBUM;Vacio;1
+USUARIO;usuario1004@udeabook.local;Medellin;Colombia;1;1;2000;1;8;2026

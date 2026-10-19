@@ -24,14 +24,13 @@ add_executable(desafioDOS_UdeABook main.cpp
     modulos_dinamicos/menu.cpp
 )
 
-# La app lee rutas relativas tipo "estaticos_y_db/indice.txt", pero Qt Creator
-# (y CMake en general) corren el .exe desde la carpeta build/, no desde codigo/.
-# Por eso copiamos estaticos_y_db/ junto al ejecutable en cada build, para que
-# esa ruta relativa funcione igual aqui que al abrir el proyecto en Qt Creator.
+# Mantener los datos junto al ejecutable sin sobrescribir cambios al recompilar.
 add_custom_command(TARGET desafioDOS_UdeABook POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_directory
-        ${CMAKE_SOURCE_DIR}/estaticos_y_db
-        $<TARGET_FILE_DIR:desafioDOS_UdeABook>/estaticos_y_db
+    COMMAND ${CMAKE_COMMAND}
+        "-DORIGEN=${CMAKE_SOURCE_DIR}/estaticos_y_db"
+        "-DDESTINO=$<TARGET_FILE_DIR:desafioDOS_UdeABook>/estaticos_y_db"
+        -P "${CMAKE_SOURCE_DIR}/core/copiar_datos.cmake"
+    VERBATIM
 )
 
 include(GNUInstallDirs)
@@ -40,11 +39,16 @@ install(TARGETS desafioDOS_UdeABook
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
 
-# Ejecutables independientes para verificar la parte de Juan sin alterar el core.
+# Cinco pruebas pequenas de la logica y la integracion completa.
 include(CTest)
 if(BUILD_TESTING)
     add_executable(pruebas_solarte pruebas/pruebas_solarte.cpp
-        modulos_dinamicos/admin_amistades.cpp modulos_dinamicos/gestor_mensajes.cpp)
+        modulos_dinamicos/admin_amistades.cpp modulos_dinamicos/gestor_mensajes.cpp
+        core/estructuras_base.cpp core/monitor_recursos.cpp core/gestor_archivos.cpp
+        modulos_dinamicos/autenticacion.cpp modulos_dinamicos/visor_perfiles.cpp
+        modulos_dinamicos/menu.cpp)
+    target_compile_definitions(pruebas_solarte PRIVATE
+        DATOS_PRUEBA_ORIGEN="${CMAKE_CURRENT_SOURCE_DIR}/estaticos_y_db")
     add_test(NAME solicitudes COMMAND pruebas_solarte 1)
     add_test(NAME sugerencias COMMAND pruebas_solarte 2)
     add_test(NAME validacion_mensajes COMMAND pruebas_solarte 3)
@@ -54,5 +58,8 @@ endif()
 option(CONSTRUIR_DEMO_SOLARTE "Ejemplo en memoria con cinco usuarios" OFF)
 if(CONSTRUIR_DEMO_SOLARTE)
     add_executable(demo_solarte ejemplos/demo_solarte.cpp
-        modulos_dinamicos/admin_amistades.cpp modulos_dinamicos/gestor_mensajes.cpp)
+        modulos_dinamicos/admin_amistades.cpp modulos_dinamicos/gestor_mensajes.cpp
+        core/estructuras_base.cpp core/monitor_recursos.cpp core/gestor_archivos.cpp
+        modulos_dinamicos/autenticacion.cpp modulos_dinamicos/visor_perfiles.cpp
+        modulos_dinamicos/menu.cpp)
 endif()
