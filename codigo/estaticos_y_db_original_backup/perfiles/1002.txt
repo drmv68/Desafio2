@@ -1,0 +1,4 @@
+estaticos_y_db/fotos/1002
+2
+graduacion.jpg;10;1
+fiesta_privada.jpg;4;0

@@ -1,0 +1,4 @@
+estaticos_y_db/fotos/2313
+2
+perfil.png;15;1
+ingenieria.png;12;1

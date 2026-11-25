@@ -1,0 +1,5 @@
+estaticos_y_db/fotos/1008
+3
+perfil.jpg;6;1
+biblioteca_central.jpg;4;1
+torneo_futbol.jpg;15;0

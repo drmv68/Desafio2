@@ -1,0 +1,4 @@
+estaticos_y_db/fotos/2312
+2
+perfil.png;19;1
+viaje_medellin.png;16;1

@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
+<<<<<<< HEAD
 <!-- Written by QtCreator 20.0.1, 2026-10-18T23:16:05. -->
+=======
+<!-- Written by QtCreator 20.0.1, 2026-11-25T09:00:40. -->
+>>>>>>> a0c6b20 (Implementacion de comentario de refresco de pagina y diagrama de clases resumido)
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>

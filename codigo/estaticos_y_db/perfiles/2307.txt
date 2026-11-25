@@ -1,0 +1,5 @@
+estaticos_y_db/fotos/2307
+3
+SUR1/foto1.png;18;1
+SUR1/foto2.png;24;1
+privado/foto_privada.png;10;0

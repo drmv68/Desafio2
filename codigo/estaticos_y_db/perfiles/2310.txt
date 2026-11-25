@@ -1,0 +1,4 @@
+estaticos_y_db/fotos/2310
+2
+perfil.png;5;1
+musica.png;10;1

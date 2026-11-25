@@ -1,0 +1,4 @@
+estaticos_y_db/fotos/2309
+2
+perfil.png;14;1
+estudio.png;8;1

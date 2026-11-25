@@ -1,0 +1,4 @@
+estaticos_y_db/fotos/2308
+2
+perfil.png;9;1
+futbol.png;11;1

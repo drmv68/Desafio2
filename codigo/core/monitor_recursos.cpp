@@ -43,9 +43,9 @@ void MonitorRecursos::mostrarReporte(const char* const nombresDeModulos[],
 
 void MonitorRecursos::limpiarPantalla() {
 #ifdef _WIN32
-    system("cls");
+    //system("cls");
 #else
-    system("clear");
+    //system("clear");
 #endif
 }
 

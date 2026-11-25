@@ -1,0 +1,5 @@
+estaticos_y_db/fotos/2306
+3
+perfil.png;35;1
+paseo_guatape.png;12;1
+amigos_u.png;15;0

@@ -145,7 +145,7 @@ bool Menu::iniciar(const char* rutaIndiceUsuarios) {
             mostrarReporteDeTodos();
             cout << "Presiona Enter para continuar...";
             cin.get();
-            monitor.limpiarPantalla();
+            //monitor.limpiarPantalla();
         }
     }
 

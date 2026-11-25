@@ -1,0 +1,4 @@
+estaticos_y_db/fotos/2311
+2
+perfil.png;22;1
+danza.png;18;1

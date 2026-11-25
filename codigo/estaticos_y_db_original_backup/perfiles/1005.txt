@@ -1,0 +1,6 @@
+estaticos_y_db/fotos/1005
+4
+perfil.jpg;18;1
+seminario_sistemas.jpg;8;1
+tarde_cafe.jpg;12;0
+viaje_cartagena.jpg;25;0
